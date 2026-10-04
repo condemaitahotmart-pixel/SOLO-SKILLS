@@ -3,235 +3,439 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Plenitud | Vive la menopausia con calma y energía</title>
-  <meta name="description" content="Curso online para entender tu cuerpo en la perimenopausia y la menopausia: sueño, sofocos, ánimo, alimentación y movimiento, paso a paso." />
-  <meta name="theme-color" content="#f3f2ec" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#161a16" media="(prefers-color-scheme: dark)" />
+  <title>Plenitud | Recupera tu sueño, tu energía y tu calma en la menopausia</title>
+  <meta name="description" content="Programa online de 8 semanas para entender tu cuerpo en la perimenopausia y la menopausia: sueño, sofocos, ánimo, alimentación y movimiento con el Método 5R." />
+  <meta name="theme-color" content="#f8f1ea" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1a1214" media="(prefers-color-scheme: dark)" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Plenitud | Vive la menopausia con calma y energía" />
-  <meta property="og:description" content="Un curso práctico para dormir mejor, entender tus cambios y volver a sentirte tú." />
+  <meta property="og:title" content="Plenitud | Tu segunda primavera empieza aquí" />
+  <meta property="og:description" content="Recupera tu sueño, tu energía y tu calma en la menopausia con el Método 5R." />
   <meta property="og:image" content="img/og.jpg" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=boska@500,700,501,701&f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/@phosphor-icons/web@2.1.1" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 
-  <link rel="preload" as="image" href="img/hero.jpg" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <a class="skip" href="#contenido">Saltar al contenido</a>
+  <div class="grain" aria-hidden="true"></div>
 
-  <header class="nav" id="top">
-    <div class="wrap nav__inner">
+  <!-- Barra superior de oferta. La cuenta regresiva solo aparece si configuras una fecha real en main.js -->
+  <div class="topbar">
+    <p>Precio de lanzamiento: <strong class="js-price">USD 27</strong> <s class="js-price-old">USD 67</s><span class="topbar__timer js-countdown" hidden> · termina en <strong class="js-countdown-time">00:00:00</strong></span></p>
+  </div>
+
+  <!-- NAV: isla flotante -->
+  <header class="nav">
+    <div class="nav__pill">
       <a href="#top" class="brand" aria-label="Plenitud, inicio">
         <span class="brand__mark" aria-hidden="true">P</span>
         <span class="brand__name">Plenitud</span>
       </a>
-      <nav aria-label="Principal">
-        <ul class="nav__links">
-          <li><a href="#programa">Programa</a></li>
-          <li><a href="#autora">Autora</a></li>
-          <li><a href="#testimonios">Testimonios</a></li>
-          <li><a href="#preguntas">Preguntas</a></li>
-        </ul>
+      <nav aria-label="Principal" class="nav__links">
+        <a href="#metodo">Método</a>
+        <a href="#resultados">Resultados</a>
+        <a href="#oferta">Precio</a>
+        <a href="#preguntas">Preguntas</a>
       </nav>
-      <a class="btn btn--primary btn--sm js-checkout" href="#oferta">Quiero empezar</a>
+      <a class="btn btn--primary btn--sm js-checkout" href="#oferta">
+        <span>Quiero empezar</span>
+        <span class="btn__icon" aria-hidden="true"><i class="ph ph-arrow-up-right"></i></span>
+      </a>
     </div>
   </header>
 
   <main id="contenido">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="wrap hero__grid">
-        <div class="hero__copy">
-          <p class="eyebrow reveal">Curso online para mujeres de 40+</p>
-          <h1 class="reveal">La menopausia no es un final. Es <em>tu segunda primavera.</em></h1>
-          <p class="hero__sub reveal">Duerme mejor, calma los sofocos y recupera tu energía con un método práctico, claro y hecho para tu día a día.</p>
-          <div class="hero__ctas reveal">
-            <a class="btn btn--primary js-checkout" href="#oferta">Quiero empezar <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
-            <a class="btn btn--ghost" href="#programa">Ver el programa</a>
+
+    <!-- ATENCIÓN: HERO -->
+    <section class="hero" id="top">
+      <div class="bloom" aria-hidden="true">
+        <span class="bloom__orb bloom__orb--1"></span>
+        <span class="bloom__orb bloom__orb--2"></span>
+        <span class="bloom__orb bloom__orb--3"></span>
+      </div>
+
+      <div class="wrap hero__inner">
+        <p class="tag reveal">Programa online de 8 semanas</p>
+        <h1 class="hero__title reveal">Recupera tu sueño, tu energía y tu calma <em>en la menopausia.</em></h1>
+        <p class="hero__sub reveal">El método paso a paso para acompañar a tu cuerpo en esta etapa. Sin dietas extremas, sin culpa y sin promesas mágicas.</p>
+        <div class="hero__ctas reveal">
+          <a class="btn btn--primary btn--lg js-checkout" href="#oferta">
+            <span>Quiero empezar</span>
+            <span class="btn__icon" aria-hidden="true"><i class="ph ph-arrow-up-right"></i></span>
+          </a>
+          <a class="btn btn--ghost btn--lg" href="#metodo">Ver cómo funciona</a>
+        </div>
+
+        <!-- VSL: si configuras videoUrl en main.js se reproduce aquí; si no, se ve el póster -->
+        <div class="bezel hero__video reveal">
+          <div class="core video js-video">
+            <div class="video__poster">
+              <div class="video__art" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+              <p class="video__quote">“Esto no es el final.<br /><em>Es tu segunda primavera.</em>”</p>
+              <button class="video__play js-play" type="button" aria-label="Reproducir el video de presentación" hidden>
+                <i class="ph-fill ph-play" aria-hidden="true"></i>
+              </button>
+              <p class="video__caption js-play-caption" hidden>Mira el video de 4 minutos</p>
+            </div>
           </div>
         </div>
-        <figure class="hero__media reveal">
-          <!-- IMAGEN: mujer de 50+ sonriendo, luz natural, exterior. 1200x1500 (4:5) -->
-          <img src="img/hero.jpg" alt="Mujer de unos cincuenta años sonriendo al aire libre con luz de tarde" width="1200" height="1500" fetchpriority="high" data-fallback="Foto principal 4:5" />
+      </div>
+    </section>
+
+    <!-- PRUEBA SOCIAL -->
+    <!-- EJEMPLO: reemplazar cifras por datos reales -->
+    <section class="proof" aria-label="Datos del programa">
+      <ul class="wrap proof__list" role="list">
+        <li class="reveal"><span class="proof__stars" aria-hidden="true"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></span><strong>4,9 de 5</strong><span>valoración de alumnas</span></li>
+        <li class="reveal"><i class="ph-light ph-users-three" aria-hidden="true"></i><strong>+1.800</strong><span>mujeres acompañadas</span></li>
+        <li class="reveal"><i class="ph-light ph-device-mobile" aria-hidden="true"></i><strong>Acceso inmediato</strong><span>desde el celular</span></li>
+        <li class="reveal"><i class="ph-light ph-shield-check" aria-hidden="true"></i><strong>7 días</strong><span>de garantía total</span></li>
+      </ul>
+    </section>
+
+    <!-- INTERÉS: TEST DE SÍNTOMAS -->
+    <section class="quiz section" aria-labelledby="quiz-title">
+      <div class="wrap quiz__grid">
+        <div class="quiz__head">
+          <h2 id="quiz-title" class="h2 reveal">¿Cuántas de estas <em>te están pasando?</em></h2>
+          <p class="lead reveal">Toca las que reconoces. Nadie más lo verá.</p>
+
+          <div class="bezel quiz__result reveal" aria-live="polite">
+            <div class="core quiz__result-core">
+              <p class="quiz__count"><span class="js-quiz-count">0</span><small>/8</small></p>
+              <p class="quiz__msg js-quiz-msg">Empieza marcando los síntomas que sientes.</p>
+              <a class="btn btn--primary btn--block js-checkout js-quiz-cta" href="#oferta" hidden>
+                <span>Quiero empezar</span>
+                <span class="btn__icon" aria-hidden="true"><i class="ph ph-arrow-up-right"></i></span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz__options" role="group" aria-label="Síntomas">
+          <button class="opt reveal" type="button" aria-pressed="false"><i class="ph-light ph-fire" aria-hidden="true"></i><span>Sofocos que llegan sin avisar</span><i class="ph ph-check opt__check" aria-hidden="true"></i></button>
+          <button class="opt reveal" type="button" aria-pressed="false"><i class="ph-light ph-moon-stars" aria-hidden="true"></i><span>Te despiertas de madrugada y no vuelves a dormir</span><i class="ph ph-check opt__check" aria-hidden="true"></i></button>
+          <button class="opt reveal" type="button" aria-pressed="false"><i class="ph-light ph-cloud-fog" aria-hidden="true"></i><span>Niebla mental y olvidos</span><i class="ph ph-check opt__check" aria-hidden="true"></i></button>
+          <button class="opt reveal" type="button" aria-pressed="false"><i class="ph-light ph-scales" aria-hidden="true"></i><span>Aumento de peso en el abdomen</span><i class="ph ph-check opt__check" aria-hidden="true"></i></button>
+          <button class="opt reveal" type="button" aria-pressed="false"><i class="ph-light ph-wave-sine" aria-hidden="true"></i><span>Ánimo en montaña rusa o irritabilidad</span><i class="ph ph-check opt__check" aria-hidden="true"></i></button>
+          <button class="opt reveal" type="button" aria-pressed="false"><i class="ph-light ph-battery-low" aria-hidden="true"></i><span>Cansancio que no se va con descanso</span><i class="ph ph-check opt__check" aria-hidden="true"></i></button>
+          <button class="opt reveal" type="button" aria-pressed="false"><i class="ph-light ph-heart-break" aria-hidden="true"></i><span>Menos deseo o sequedad íntima</span><i class="ph ph-check opt__check" aria-hidden="true"></i></button>
+          <button class="opt reveal" type="button" aria-pressed="false"><i class="ph-light ph-person-simple-walk" aria-hidden="true"></i><span>Dolores articulares nuevos</span><i class="ph ph-check opt__check" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- NO ES TU CULPA: texto que se revela + curva hormonal -->
+    <section class="why section" aria-labelledby="why-title">
+      <div class="wrap">
+        <h2 id="why-title" class="sr-only">No es tu culpa</h2>
+        <p class="why__text js-scrub">No es falta de voluntad ni “cosas de la edad”. Tus hormonas están cambiando y tu cuerpo necesita otras herramientas. Cuando entiendes qué pasa, dejas de pelear contigo y empiezas a cuidarte con un plan.</p>
+
+        <figure class="bezel why__chart reveal">
+          <div class="core why__chart-core">
+            <figcaption class="why__chart-head">
+              <strong>Así cambia el estrógeno</strong>
+              <span>Gráfico ilustrativo, no a escala</span>
+            </figcaption>
+            <svg class="curve" viewBox="0 0 800 300" role="img" aria-label="Curva del estrógeno: estable en la etapa fértil, con subidas y bajadas en la perimenopausia y baja y estable en la posmenopausia">
+              <defs>
+                <linearGradient id="curveFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.22" />
+                  <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+              <line class="curve__zone" x1="230" y1="20" x2="230" y2="270" />
+              <line class="curve__zone" x1="540" y1="20" x2="540" y2="270" />
+              <path class="curve__area" d="M10,90 C80,86 150,94 230,88 L255,62 L280,128 L305,72 L330,150 L355,96 L380,176 L405,120 L430,196 L455,150 L480,212 L510,190 C530,226 560,240 600,244 L790,248 L790,270 L10,270 Z" fill="url(#curveFill)" />
+              <path class="curve__line js-curve" d="M10,90 C80,86 150,94 230,88 L255,62 L280,128 L305,72 L330,150 L355,96 L380,176 L405,120 L430,196 L455,150 L480,212 L510,190 C530,226 560,240 600,244 L790,248" />
+              <text class="curve__label" x="120" y="292" text-anchor="middle">Etapa fértil</text>
+              <text class="curve__label curve__label--hl" x="385" y="292" text-anchor="middle">Perimenopausia</text>
+              <text class="curve__label" x="665" y="292" text-anchor="middle">Posmenopausia</text>
+            </svg>
+            <p class="why__note">Las subidas y bajadas de la perimenopausia explican por qué un día estás bien y al siguiente no te reconoces.</p>
+          </div>
         </figure>
       </div>
     </section>
 
-    <!-- SÍNTOMAS -->
-    <section class="symptoms" aria-labelledby="sintomas-title">
-      <div class="wrap symptoms__inner">
-        <h2 id="sintomas-title" class="reveal">¿Te reconoces en algo de esto?</h2>
-        <ul class="chips" role="list">
-          <li class="chip reveal"><i class="ph ph-fire" aria-hidden="true"></i>Sofocos que llegan sin avisar</li>
-          <li class="chip reveal"><i class="ph ph-moon-stars" aria-hidden="true"></i>Te despiertas a las 3 de la mañana</li>
-          <li class="chip reveal"><i class="ph ph-cloud-fog" aria-hidden="true"></i>Niebla mental y olvidos</li>
-          <li class="chip reveal"><i class="ph ph-scales" aria-hidden="true"></i>Cambios de peso en el abdomen</li>
-          <li class="chip reveal"><i class="ph ph-wave-sine" aria-hidden="true"></i>Ánimo en montaña rusa</li>
-          <li class="chip reveal"><i class="ph ph-battery-low" aria-hidden="true"></i>Cansancio que no se va</li>
-          <li class="chip reveal"><i class="ph ph-heart-break" aria-hidden="true"></i>Menos deseo y más sequedad</li>
-          <li class="chip reveal"><i class="ph ph-bone" aria-hidden="true"></i>Dolores articulares nuevos</li>
-        </ul>
-        <p class="symptoms__close reveal">No estás exagerando y no estás sola. Tu cuerpo está cambiando, y con la información correcta puedes acompañarlo en lugar de pelear con él.</p>
+    <!-- DESEO: MÉTODO 5R (título fijo + pilares que pasan) -->
+    <section class="method section" id="metodo" aria-labelledby="metodo-title">
+      <div class="wrap method__grid">
+        <div class="method__sticky">
+          <p class="tag reveal">El método</p>
+          <h2 id="metodo-title" class="h2 reveal">Método 5R: cinco pasos para <em>volver a ti.</em></h2>
+          <p class="lead reveal">Ocho semanas, un pilar a la vez. Lecciones cortas en video y una tarea sencilla para aplicar cada semana.</p>
+          <a class="btn btn--primary reveal js-checkout" href="#oferta">
+            <span>Quiero empezar</span>
+            <span class="btn__icon" aria-hidden="true"><i class="ph ph-arrow-up-right"></i></span>
+          </a>
+        </div>
+
+        <ol class="pillars" role="list">
+          <li class="bezel pillar">
+            <div class="core pillar__core">
+              <div class="pillar__top"><span class="pillar__letter" aria-hidden="true">R</span><span class="pillar__weeks">Semana 1</span></div>
+              <h3>Reconoce</h3>
+              <p>Entiende tu etapa y lleva un diario de síntomas para descubrir tus propios disparadores.</p>
+              <ul role="list"><li><i class="ph ph-check" aria-hidden="true"></i>Perimenopausia vs. menopausia, sin tecnicismos</li><li><i class="ph ph-check" aria-hidden="true"></i>Tu mapa personal de síntomas</li></ul>
+            </div>
+          </li>
+          <li class="bezel pillar">
+            <div class="core pillar__core">
+              <div class="pillar__top"><span class="pillar__letter" aria-hidden="true">R</span><span class="pillar__weeks">Semanas 2 y 3</span></div>
+              <h3>Repara tu sueño</h3>
+              <p>Una rutina nocturna de 20 minutos y ajustes en tu cuarto para dormir de corrido otra vez.</p>
+              <ul role="list"><li><i class="ph ph-check" aria-hidden="true"></i>Qué hacer si te despiertas a las 3 a. m.</li><li><i class="ph ph-check" aria-hidden="true"></i>Respiración para sofocos nocturnos</li></ul>
+            </div>
+          </li>
+          <li class="bezel pillar">
+            <div class="core pillar__core">
+              <div class="pillar__top"><span class="pillar__letter" aria-hidden="true">R</span><span class="pillar__weeks">Semanas 4 y 5</span></div>
+              <h3>Regula con la comida</h3>
+              <p>Platos simples que cuidan tus huesos, tu energía y tu digestión. Sin contar calorías.</p>
+              <ul role="list"><li><i class="ph ph-check" aria-hidden="true"></i>El plato Plenitud en 4 pasos</li><li><i class="ph ph-check" aria-hidden="true"></i>Proteína, calcio y fibra sin complicarte</li></ul>
+            </div>
+          </li>
+          <li class="bezel pillar">
+            <div class="core pillar__core">
+              <div class="pillar__top"><span class="pillar__letter" aria-hidden="true">R</span><span class="pillar__weeks">Semanas 6 y 7</span></div>
+              <h3>Recarga tu cuerpo</h3>
+              <p>Fuerza suave y caminatas que protegen tus músculos y articulaciones. 3 sesiones de 20 minutos.</p>
+              <ul role="list"><li><i class="ph ph-check" aria-hidden="true"></i>Rutinas en casa, sin equipo</li><li><i class="ph ph-check" aria-hidden="true"></i>Adaptadas a dolores articulares</li></ul>
+            </div>
+          </li>
+          <li class="bezel pillar">
+            <div class="core pillar__core">
+              <div class="pillar__top"><span class="pillar__letter" aria-hidden="true">R</span><span class="pillar__weeks">Semana 8</span></div>
+              <h3>Reconecta contigo</h3>
+              <p>Ánimo, deseo y vínculos. Herramientas para la irritabilidad y una conversación honesta sobre la intimidad.</p>
+              <ul role="list"><li><i class="ph ph-check" aria-hidden="true"></i>Tu plan para los días difíciles</li><li><i class="ph ph-check" aria-hidden="true"></i>Preguntas para tu consulta médica</li></ul>
+            </div>
+          </li>
+        </ol>
       </div>
     </section>
 
-    <!-- PROGRAMA (bento, 5 módulos = 5 celdas) -->
-    <section class="program" id="programa" aria-labelledby="programa-title">
+    <!-- ANTES / DESPUÉS -->
+    <section class="shift section" id="resultados" aria-labelledby="shift-title">
+      <div class="wrap shift__inner">
+        <h2 id="shift-title" class="h2 reveal">De sobrevivir el día a <em>disfrutarlo otra vez.</em></h2>
+        <div class="switch reveal" role="tablist" aria-label="Comparación">
+          <button class="switch__btn" role="tab" aria-selected="true" aria-controls="shift-panel" data-state="hoy" type="button">Hoy</button>
+          <button class="switch__btn" role="tab" aria-selected="false" aria-controls="shift-panel" data-state="metodo" type="button">Con el Método 5R</button>
+          <span class="switch__thumb" aria-hidden="true"></span>
+        </div>
+
+        <div class="bezel shift__card reveal">
+          <ul class="core shift__list" id="shift-panel" role="tabpanel" data-state="hoy">
+            <li><i class="ph-light ph-moon" aria-hidden="true"></i><span data-hoy="Te despiertas varias veces y amaneces agotada." data-metodo="Tienes una rutina que te ayuda a dormir más y mejor."></span></li>
+            <li><i class="ph-light ph-fire" aria-hidden="true"></i><span data-hoy="Los sofocos te toman por sorpresa en el peor momento." data-metodo="Conoces tus disparadores y sabes cómo bajar su intensidad."></span></li>
+            <li><i class="ph-light ph-bowl-food" aria-hidden="true"></i><span data-hoy="Pruebas dietas que te dejan con hambre y sin resultados." data-metodo="Comes rico y sencillo, con platos pensados para esta etapa."></span></li>
+            <li><i class="ph-light ph-smiley-meh" aria-hidden="true"></i><span data-hoy="Te sientes irritable y no sabes por qué." data-metodo="Entiendes tus cambios de ánimo y tienes herramientas para ellos."></span></li>
+            <li><i class="ph-light ph-stethoscope" aria-hidden="true"></i><span data-hoy="Sales de la consulta médica con más dudas que respuestas." data-metodo="Llegas a tu cita con preguntas claras y decides con información."></span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUESINA (única en la página) -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Sin dietas extremas</span><i class="ph-light ph-flower-lotus"></i>
+        <span>A tu ritmo</span><i class="ph-light ph-flower-lotus"></i>
+        <span>Desde el celular</span><i class="ph-light ph-flower-lotus"></i>
+        <span>Basado en evidencia</span><i class="ph-light ph-flower-lotus"></i>
+        <span>Sin culpa</span><i class="ph-light ph-flower-lotus"></i>
+        <span>Sin dietas extremas</span><i class="ph-light ph-flower-lotus"></i>
+        <span>A tu ritmo</span><i class="ph-light ph-flower-lotus"></i>
+        <span>Desde el celular</span><i class="ph-light ph-flower-lotus"></i>
+        <span>Basado en evidencia</span><i class="ph-light ph-flower-lotus"></i>
+        <span>Sin culpa</span><i class="ph-light ph-flower-lotus"></i>
+      </div>
+    </div>
+
+    <!-- TESTIMONIOS -->
+    <!-- EJEMPLO: reemplazar por testimonios reales con permiso de sus autoras -->
+    <section class="voices section" aria-labelledby="voices-title">
+      <div class="wrap voices__grid">
+        <div class="voices__side">
+          <h2 id="voices-title" class="h2 reveal">Ellas ya <em>lo están viviendo.</em></h2>
+          <div class="voices__avatars reveal" aria-hidden="true">
+            <span style="--h: 14">MQ</span><span style="--h: 340">AP</span><span style="--h: 28">RG</span><span style="--h: 0">PS</span>
+          </div>
+          <div class="voices__ctrl">
+            <button class="icon-btn js-prev" type="button" aria-label="Testimonio anterior"><i class="ph ph-arrow-left" aria-hidden="true"></i></button>
+            <button class="icon-btn js-next" type="button" aria-label="Testimonio siguiente"><i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+            <span class="voices__pos"><span class="js-pos">1</span> de 4</span>
+          </div>
+        </div>
+
+        <div class="voices__stage" aria-live="polite">
+          <figure class="voice is-active">
+            <blockquote>“Por primera vez en dos años dormí siete horas seguidas. La rutina nocturna me cambió las semanas.”</blockquote>
+            <figcaption><span class="voice__avatar" style="--h: 14" aria-hidden="true">MQ</span><span><strong>Marisol Quintero</strong>52 años, profesora en Bogotá</span></figcaption>
+          </figure>
+          <figure class="voice">
+            <blockquote>“Entendí qué me pasaba y dejé de sentirme loca. Ahora llego a mi ginecóloga con preguntas concretas.”</blockquote>
+            <figcaption><span class="voice__avatar" style="--h: 340" aria-hidden="true">AP</span><span><strong>Adriana Peláez</strong>48 años, contadora en Lima</span></figcaption>
+          </figure>
+          <figure class="voice">
+            <blockquote>“Los sofocos no desaparecieron por arte de magia, pero ahora sé qué los dispara y son mucho más suaves.”</blockquote>
+            <figcaption><span class="voice__avatar" style="--h: 28" aria-hidden="true">RG</span><span><strong>Rosa Elena Garza</strong>55 años, comerciante en Monterrey</span></figcaption>
+          </figure>
+          <figure class="voice">
+            <blockquote>“Las recetas son sencillas de verdad. Tengo energía para caminar por las tardes y me siento más ligera.”</blockquote>
+            <figcaption><span class="voice__avatar" style="--h: 0" aria-hidden="true">PS</span><span><strong>Pilar Sanmartín</strong>51 años, enfermera en Valencia</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCIÓN: OFERTA (bloque de color deliberado) -->
+    <section class="offer" id="oferta" aria-labelledby="oferta-title">
+      <div class="offer__glow" aria-hidden="true"></div>
+      <div class="wrap offer__grid">
+        <div class="offer__copy">
+          <p class="tag tag--on-dark reveal">Todo lo que recibes hoy</p>
+          <h2 id="oferta-title" class="h2 reveal">Tu programa completo, <em>con bonos incluidos.</em></h2>
+
+          <ul class="stack" role="list">
+            <li class="reveal"><i class="ph-light ph-play-circle" aria-hidden="true"></i><div><strong>Programa Plenitud: Método 5R</strong><span>5 módulos en video, 8 semanas de acompañamiento</span></div><s>USD 97</s></li>
+            <li class="reveal"><i class="ph-light ph-notebook" aria-hidden="true"></i><div><strong>Diario de síntomas imprimible</strong><span>Para descubrir tus disparadores</span></div><s>USD 17</s></li>
+            <li class="reveal"><i class="ph-light ph-cooking-pot" aria-hidden="true"></i><div><strong>Bono: recetario de 30 platos</strong><span>Desayunos, almuerzos y cenas fáciles</span></div><s>USD 27</s></li>
+            <li class="reveal"><i class="ph-light ph-moon-stars" aria-hidden="true"></i><div><strong>Bono: audios para dormir</strong><span>Relajación guiada de 10 minutos</span></div><s>USD 19</s></li>
+            <li class="reveal"><i class="ph-light ph-chats-circle" aria-hidden="true"></i><div><strong>Bono: guía para tu consulta médica</strong><span>Las preguntas que sí importan</span></div><s>USD 15</s></li>
+          </ul>
+          <p class="stack__total reveal">Valor total: <s>USD 175</s></p>
+        </div>
+
+        <div class="bezel bezel--light price reveal">
+          <div class="core price__core">
+            <p class="price__label">Hoy, acceso completo por</p>
+            <p class="price__now js-price">USD 27</p>
+            <p class="price__alt">o <span class="js-installments">6 cuotas</span> con tarjeta</p>
+            <a class="btn btn--primary btn--lg btn--block js-checkout" href="#oferta">
+              <span>Quiero empezar</span>
+              <span class="btn__icon" aria-hidden="true"><i class="ph ph-arrow-up-right"></i></span>
+            </a>
+            <ul class="price__trust" role="list">
+              <li><i class="ph-light ph-lightning" aria-hidden="true"></i>Acceso inmediato por correo</li>
+              <li><i class="ph-light ph-calendar-check" aria-hidden="true"></i>12 meses para verlo a tu ritmo</li>
+              <li><i class="ph-light ph-lock-simple" aria-hidden="true"></i>Pago seguro con Hotmart</li>
+            </ul>
+            <div class="price__pay" aria-label="Medios de pago">
+              <i class="ph-light ph-credit-card" aria-hidden="true"></i><i class="ph-light ph-paypal-logo" aria-hidden="true"></i><i class="ph-light ph-bank" aria-hidden="true"></i>
+              <span>Tarjeta, PayPal y más</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GARANTÍA -->
+    <section class="guarantee section" aria-labelledby="garantia-title">
+      <div class="wrap guarantee__inner">
+        <div class="seal reveal" aria-hidden="true">
+          <svg viewBox="0 0 200 200" class="seal__ring">
+            <defs><path id="sealPath" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" /></defs>
+            <text><textPath href="#sealPath" textLength="486" lengthAdjust="spacing">GARANTÍA INCONDICIONAL · RIESGO CERO · 100% DE VUELTA · </textPath></text>
+          </svg>
+          <div class="seal__core"><strong>7</strong><span>días</span></div>
+        </div>
+        <div class="guarantee__copy">
+          <h2 id="garantia-title" class="h2 reveal">Pruébalo 7 días. <em>Si no es para ti, te devolvemos todo.</em></h2>
+          <p class="lead reveal">Entra, mira las lecciones y aplica la rutina nocturna. Si sientes que no es lo que buscabas, pides el reembolso desde Hotmart y recibes el 100% de tu dinero. Sin preguntas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARA QUIÉN ES -->
+    <section class="fit section" aria-labelledby="fit-title">
       <div class="wrap">
-        <h2 id="programa-title" class="section-title reveal">Lo que vas a aprender en 5 módulos</h2>
-        <p class="section-lead reveal">Lecciones cortas en video, guías descargables y ejercicios que puedes aplicar desde la primera semana.</p>
-
-        <div class="bento">
-          <article class="cell cell--a cell--image reveal">
-            <!-- IMAGEN: mujer leyendo o tomando notas con calma. 1200x900 -->
-            <img src="img/modulo-1.jpg" alt="Mujer tomando notas en un cuaderno junto a una taza de té" loading="lazy" width="1200" height="900" data-fallback="Foto módulo 1" />
-            <div class="cell__body">
-              <h3>Entiende lo que te pasa</h3>
-              <p>Perimenopausia, menopausia y posmenopausia explicadas sin tecnicismos. Qué hacen tus hormonas y por qué.</p>
+        <h2 id="fit-title" class="h2 fit__title reveal">¿Es para ti?</h2>
+        <div class="fit__grid">
+          <div class="bezel reveal">
+            <div class="core fit__col fit__col--yes">
+              <h3><i class="ph-light ph-check-circle" aria-hidden="true"></i>Es para ti si</h3>
+              <ul role="list">
+                <li>Tienes entre 40 y 60 años y notas cambios que no entiendes</li>
+                <li>Quieres herramientas prácticas, no solo teoría</li>
+                <li>Buscas complementar lo que te indica tu médico</li>
+                <li>Puedes dedicar unos 30 minutos por semana</li>
+              </ul>
             </div>
-          </article>
-
-          <article class="cell cell--b cell--tint reveal">
-            <i class="ph ph-moon cell__icon" aria-hidden="true"></i>
-            <h3>Sueño reparador</h3>
-            <p>Una rutina nocturna de 20 minutos para dormir de corrido otra vez.</p>
-          </article>
-
-          <article class="cell cell--c reveal">
-            <i class="ph ph-thermometer-cold cell__icon" aria-hidden="true"></i>
-            <h3>Sofocos bajo control</h3>
-            <p>Detecta tus disparadores y aplica técnicas de respiración que bajan su intensidad.</p>
-          </article>
-
-          <article class="cell cell--d reveal">
-            <i class="ph ph-bowl-food cell__icon" aria-hidden="true"></i>
-            <h3>Alimentación que te sostiene</h3>
-            <p>Platos simples para tus huesos, tu energía y tu digestión. Sin dietas extremas.</p>
-          </article>
-
-          <article class="cell cell--e cell--image reveal">
-            <!-- IMAGEN: mujer madura haciendo yoga o caminando. 1200x900 -->
-            <img src="img/modulo-5.jpg" alt="Mujer madura estirando sobre una esterilla en una sala luminosa" loading="lazy" width="1200" height="900" data-fallback="Foto módulo 5" />
-            <div class="cell__body">
-              <h3>Movimiento y ánimo</h3>
-              <p>Fuerza suave, caminatas y hábitos para un ánimo más estable y una mente más clara.</p>
+          </div>
+          <div class="bezel reveal">
+            <div class="core fit__col fit__col--no">
+              <h3><i class="ph-light ph-x-circle" aria-hidden="true"></i>No es para ti si</h3>
+              <ul role="list">
+                <li>Buscas una pastilla o una solución de un día para otro</li>
+                <li>Esperas que el curso reemplace a tu médico</li>
+                <li>No estás dispuesta a probar pequeños cambios</li>
+              </ul>
             </div>
-          </article>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- AUTORA -->
-    <section class="author" id="autora" aria-labelledby="autora-title">
+    <!-- EJEMPLO: reemplazar nombre, profesión, foto y biografía por los datos reales -->
+    <section class="author section" id="autora" aria-labelledby="autora-title">
       <div class="wrap author__grid">
-        <figure class="author__media reveal">
-          <!-- IMAGEN: retrato de la autora, fondo neutro. 1000x1250 (4:5) -->
-          <img src="img/autora.jpg" alt="Retrato de Lucía Ferrer, autora del curso" loading="lazy" width="1000" height="1250" data-fallback="Retrato de la autora" />
-        </figure>
+        <div class="bezel author__photo reveal">
+          <div class="core author__photo-core">
+            <img src="img/autora.jpg" alt="Retrato de Lucía Ferrer, autora del programa" width="900" height="1125" loading="lazy" class="js-optional-img" />
+            <span class="author__mono" aria-hidden="true">LF</span>
+          </div>
+        </div>
         <div class="author__copy">
-          <!-- EJEMPLO: reemplazar nombre, profesión y biografía por los datos reales de la autora -->
-          <h2 id="autora-title" class="reveal">Hola, soy Lucía Ferrer</h2>
-          <p class="reveal">Nutricionista especializada en salud femenina. Llegué a la menopausia con 49 años, insomnio y la sensación de no reconocerme en el espejo.</p>
-          <p class="reveal">Plenitud es lo que me habría gustado tener entonces: información seria, explicada con cariño, y un plan concreto para cada síntoma.</p>
-          <ul class="facts reveal" role="list">
-            <li><strong>+12 años</strong><span>acompañando a mujeres</span></li>
-            <li><strong>+1.800</strong><span>alumnas en sus programas</span></li>
+          <h2 id="autora-title" class="h2 reveal">Soy Lucía Ferrer y <em>también pasé por esto.</em></h2>
+          <p class="reveal">Nutricionista especializada en salud femenina. A los 49 años llegaron el insomnio, los sofocos y la sensación de no reconocerme en el espejo.</p>
+          <p class="reveal">Busqué información seria y solo encontré mitos o promesas milagrosas. Plenitud es el programa que me habría gustado tener: claro, cariñoso y basado en evidencia.</p>
+          <ul class="author__facts reveal" role="list">
+            <li><strong>+12</strong><span>años en salud femenina</span></li>
+            <li><strong>+1.800</strong><span>alumnas acompañadas</span></li>
           </ul>
         </div>
-      </div>
-    </section>
-
-    <!-- TESTIMONIOS (carrusel scroll-snap) -->
-    <!-- EJEMPLO: reemplazar por testimonios reales con permiso de sus autoras -->
-    <section class="testimonials" id="testimonios" aria-labelledby="testimonios-title">
-      <div class="wrap testimonials__head">
-        <h2 id="testimonios-title" class="section-title reveal">Lo que cuentan las alumnas</h2>
-        <div class="carousel-ctrl" aria-hidden="false">
-          <button class="icon-btn js-prev" type="button" aria-label="Testimonio anterior"><i class="ph ph-arrow-left" aria-hidden="true"></i></button>
-          <button class="icon-btn js-next" type="button" aria-label="Testimonio siguiente"><i class="ph ph-arrow-right" aria-hidden="true"></i></button>
-        </div>
-      </div>
-      <div class="track js-track" tabindex="0" aria-label="Testimonios, desplázate horizontalmente">
-        <figure class="quote">
-          <blockquote>“Por primera vez en dos años dormí siete horas seguidas. La rutina nocturna del módulo 2 me cambió las semanas.”</blockquote>
-          <figcaption><strong>Marisol Quintero</strong><span>52 años, profesora en Bogotá</span></figcaption>
-        </figure>
-        <figure class="quote">
-          <blockquote>“Entendí qué me pasaba y dejé de sentirme loca. Ahora llego a mi ginecóloga con preguntas concretas.”</blockquote>
-          <figcaption><strong>Adriana Peláez</strong><span>48 años, contadora en Lima</span></figcaption>
-        </figure>
-        <figure class="quote">
-          <blockquote>“Los sofocos no desaparecieron por arte de magia, pero ahora sé qué los dispara y son mucho más suaves.”</blockquote>
-          <figcaption><strong>Rosa Elena Garza</strong><span>55 años, comerciante en Monterrey</span></figcaption>
-        </figure>
-        <figure class="quote">
-          <blockquote>“Las recetas son sencillas de verdad. Bajé la hinchazón y tengo energía para caminar por las tardes.”</blockquote>
-          <figcaption><strong>Pilar Sanmartín</strong><span>51 años, enfermera en Valencia</span></figcaption>
-        </figure>
-        <figure class="quote">
-          <blockquote>“Me lo regaló mi hija. Lo hice a mi ritmo, desde el celular, y me sentí acompañada en cada lección.”</blockquote>
-          <figcaption><strong>Gloria Benítez</strong><span>58 años, jubilada en Asunción</span></figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <!-- OFERTA -->
-    <section class="offer" id="oferta" aria-labelledby="oferta-title">
-      <div class="wrap offer__grid">
-        <div class="offer__copy">
-          <p class="eyebrow reveal">Acceso inmediato</p>
-          <h2 id="oferta-title" class="reveal">Todo lo que incluye Plenitud</h2>
-          <ul class="includes reveal" role="list">
-            <li><i class="ph ph-play-circle" aria-hidden="true"></i><div><strong>5 módulos en video</strong><span>Lecciones de 10 a 15 minutos, para ver cuando quieras.</span></div></li>
-            <li><i class="ph ph-file-text" aria-hidden="true"></i><div><strong>Guías descargables en PDF</strong><span>Diario de síntomas, rutina nocturna y lista de compras.</span></div></li>
-            <li><i class="ph ph-cooking-pot" aria-hidden="true"></i><div><strong>Bono: recetario de 30 platos</strong><span>Desayunos, almuerzos y cenas pensados para esta etapa.</span></div></li>
-            <li><i class="ph ph-chats-circle" aria-hidden="true"></i><div><strong>Bono: preguntas para tu consulta médica</strong><span>Para aprovechar al máximo tu cita con la ginecóloga.</span></div></li>
-            <li><i class="ph ph-infinity" aria-hidden="true"></i><div><strong>Acceso por 12 meses</strong><span>Desde el celular, la tablet o la computadora.</span></div></li>
-          </ul>
-        </div>
-
-        <aside class="price-card reveal" aria-label="Precio">
-          <p class="price-card__label">Inscripción única</p>
-          <p class="price-card__old"><span class="sr-only">Precio anterior:</span><s class="js-price-old">USD 67</s></p>
-          <p class="price-card__price"><span class="js-price">USD 27</span></p>
-          <p class="price-card__note">O hasta 6 cuotas con tarjeta</p>
-          <a class="btn btn--primary btn--block js-checkout" href="#oferta">Quiero empezar <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
-          <ul class="trust" role="list">
-            <li><i class="ph ph-shield-check" aria-hidden="true"></i>Garantía de 7 días: si no es para ti, te devolvemos el 100%</li>
-            <li><i class="ph ph-lock-simple" aria-hidden="true"></i>Pago seguro procesado por Hotmart</li>
-          </ul>
-        </aside>
       </div>
     </section>
 
     <!-- FAQ -->
-    <section class="faq" id="preguntas" aria-labelledby="faq-title">
+    <section class="faq section" id="preguntas" aria-labelledby="faq-title">
       <div class="wrap faq__inner">
-        <h2 id="faq-title" class="section-title reveal">Preguntas frecuentes</h2>
+        <h2 id="faq-title" class="h2 reveal">Preguntas frecuentes</h2>
         <div class="accordion">
           <details class="reveal">
-            <summary>¿Es para mí si todavía tengo la regla?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-            <p>Sí. Muchos síntomas empiezan en la perimenopausia, años antes de la última regla. El curso te ayuda a reconocerlos desde el inicio.</p>
+            <summary>¿Es para mí si todavía tengo la regla?<span class="acc__icon" aria-hidden="true"></span></summary>
+            <p>Sí. Muchos síntomas empiezan en la perimenopausia, años antes de la última regla. El programa te ayuda a reconocerlos desde el inicio.</p>
           </details>
           <details class="reveal">
-            <summary>¿Reemplaza a mi médico o a la terapia hormonal?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+            <summary>¿Reemplaza a mi médico o a la terapia hormonal?<span class="acc__icon" aria-hidden="true"></span></summary>
             <p>No. Plenitud es educativo y complementa tu atención médica. Te damos herramientas para tus hábitos y preguntas claras para decidir junto a tu profesional de salud.</p>
           </details>
           <details class="reveal">
-            <summary>¿Cuánto tiempo necesito por semana?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-            <p>Con unos 30 minutos a la semana puedes avanzar un módulo. Las lecciones son cortas y puedes repetirlas cuantas veces quieras.</p>
+            <summary>¿Cuánto tiempo necesito por semana?<span class="acc__icon" aria-hidden="true"></span></summary>
+            <p>Unos 30 minutos para las lecciones y la tarea de la semana. Las lecciones duran entre 10 y 15 minutos y puedes repetirlas cuando quieras.</p>
           </details>
           <details class="reveal">
-            <summary>¿Cómo recibo el acceso?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-            <p>Apenas se confirma el pago, Hotmart te envía un correo con tu usuario y contraseña para entrar a la plataforma.</p>
+            <summary>¿Cómo recibo el acceso?<span class="acc__icon" aria-hidden="true"></span></summary>
+            <p>Apenas se confirma el pago, Hotmart te envía un correo con tus datos para entrar a la plataforma desde el celular o la computadora.</p>
           </details>
           <details class="reveal">
-            <summary>¿Y si no me gusta?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+            <summary>¿Puedo pagar en cuotas?<span class="acc__icon" aria-hidden="true"></span></summary>
+            <p>Sí, con tarjeta de crédito puedes pagar en cuotas. Las opciones disponibles aparecen en la página de pago según tu país.</p>
+          </details>
+          <details class="reveal">
+            <summary>¿Y si no me gusta?<span class="acc__icon" aria-hidden="true"></span></summary>
             <p>Tienes 7 días de garantía. Pides el reembolso desde Hotmart y te devolvemos el 100% sin preguntas.</p>
           </details>
         </div>
@@ -240,23 +444,25 @@
 
     <!-- CTA FINAL -->
     <section class="final" aria-labelledby="final-title">
+      <div class="bloom bloom--final" aria-hidden="true">
+        <span class="bloom__orb bloom__orb--1"></span>
+        <span class="bloom__orb bloom__orb--2"></span>
+      </div>
       <div class="wrap final__inner">
-        <div class="final__media reveal">
-          <!-- IMAGEN: grupo de amigas de 50+ riendo juntas. 1600x900 -->
-          <img src="img/final.jpg" alt="Tres amigas de más de cincuenta años riendo juntas en una terraza" loading="lazy" width="1600" height="900" data-fallback="Foto cierre 16:9" />
-        </div>
-        <div class="final__copy">
-          <h2 id="final-title" class="reveal">Esta etapa también puede ser <em>tu mejor momento.</em></h2>
-          <p class="reveal">Empieza hoy y siente la diferencia en tus próximas noches.</p>
-          <a class="btn btn--primary reveal js-checkout" href="#oferta">Quiero empezar <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
-        </div>
+        <h2 id="final-title" class="final__title reveal">Tu segunda primavera <em>empieza esta noche.</em></h2>
+        <p class="lead reveal">Únete hoy y aplica la rutina de sueño antes de acostarte.</p>
+        <a class="btn btn--primary btn--xl reveal js-checkout" href="#oferta">
+          <span>Quiero empezar</span>
+          <span class="btn__icon" aria-hidden="true"><i class="ph ph-arrow-up-right"></i></span>
+        </a>
+        <p class="final__micro reveal"><i class="ph-light ph-shield-check" aria-hidden="true"></i>Garantía de 7 días. Acceso inmediato.</p>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="wrap footer__inner">
-      <p class="disclaimer">Aviso: el contenido de Plenitud es educativo y no sustituye el diagnóstico ni el tratamiento de un profesional de la salud. Consulta a tu médico antes de cambiar tu medicación o tu rutina de ejercicio. Los resultados varían de una persona a otra.</p>
+    <div class="wrap">
+      <p class="disclaimer">Aviso: el contenido de Plenitud es educativo y no sustituye el diagnóstico ni el tratamiento de un profesional de la salud. Consulta a tu médico antes de cambiar tu medicación o tu rutina de ejercicio. Los resultados varían de una persona a otra. Este sitio no forma parte de Facebook ni de Meta Platforms, Inc.</p>
       <div class="footer__row">
         <span>© <span class="js-year">2026</span> Plenitud</span>
         <a href="#">Términos</a>
@@ -266,10 +472,9 @@
     </div>
   </footer>
 
-  <!-- Barra fija en móvil, aparece al pasar el hero -->
   <div class="sticky-cta" aria-hidden="true">
     <div><strong class="js-price">USD 27</strong><span>Garantía de 7 días</span></div>
-    <a class="btn btn--primary btn--sm js-checkout" href="#oferta" tabindex="-1">Quiero empezar</a>
+    <a class="btn btn--primary btn--sm js-checkout" href="#oferta" tabindex="-1"><span>Quiero empezar</span></a>
   </div>
 
   <script src="main.js" defer></script>
