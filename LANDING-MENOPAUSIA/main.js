@@ -1,140 +1,57 @@
 // ================= CONFIGURACIÓN: edita aquí =================
 const CONFIG = {
-  // Link de checkout de Hotmart (Producto > Links de venta)
+  // Link de checkout de Hotmart (Producto > Links de venta). Mientras tenga XXXX, los botones bajan al precio.
   checkoutUrl: "https://pay.hotmart.com/XXXXXXXXXX",
-  price: "USD 27",
-  oldPrice: "USD 67",
-  installments: "6 cuotas",
-  // Video de venta (VSL). Ejemplos:
-  //   YouTube: "https://www.youtube.com/embed/ID?autoplay=1&rel=0"
-  //   Vimeo:   "https://player.vimeo.com/video/ID?autoplay=1"
-  // Déjalo vacío para mostrar solo el póster.
-  videoUrl: "",
-  // Fin REAL de la oferta de lanzamiento, ej. "2026-10-20T23:59:00-05:00".
-  // Déjalo en null para no mostrar cuenta regresiva.
-  deadline: null,
+  price: "US$17.97",
+  bumpPrice: "US$9.97",
+  // Días de garantía configurados en Hotmart. Pon null para ocultar todas las menciones de garantía.
+  guaranteeDays: 7,
 };
 // =============================================================
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const desktop = matchMedia("(min-width: 960px)");
+const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
 
 document.documentElement.classList.add("js");
 
-// ---------- Checkout, precios, año ----------
+// ---------- Datos de la oferta ----------
 if (!CONFIG.checkoutUrl.includes("XXXX")) {
   $$(".js-checkout").forEach((a) => (a.href = CONFIG.checkoutUrl));
 }
 $$(".js-price").forEach((el) => (el.textContent = CONFIG.price));
-$$(".js-price-old").forEach((el) => (el.textContent = CONFIG.oldPrice));
-$$(".js-installments").forEach((el) => (el.textContent = CONFIG.installments));
+$$(".js-bump-price").forEach((el) => (el.textContent = CONFIG.bumpPrice));
 $$(".js-year").forEach((el) => (el.textContent = new Date().getFullYear()));
-
-// ---------- Cuenta regresiva (solo con fecha real) ----------
-if (CONFIG.deadline) {
-  const end = new Date(CONFIG.deadline).getTime();
-  const box = $(".js-countdown");
-  const out = $(".js-countdown-time");
-  const pad = (n) => String(n).padStart(2, "0");
-  const tick = () => {
-    const left = end - Date.now();
-    if (left <= 0) { box.hidden = true; return; }
-    const d = Math.floor(left / 864e5);
-    const h = Math.floor((left % 864e5) / 36e5);
-    const m = Math.floor((left % 36e5) / 6e4);
-    const s = Math.floor((left % 6e4) / 1e3);
-    out.textContent = (d ? `${d}d ` : "") + `${pad(h)}:${pad(m)}:${pad(s)}`;
-    box.hidden = false;
-    setTimeout(tick, 1000);
-  };
-  tick();
+if (CONFIG.guaranteeDays) {
+  $$(".js-guarantee").forEach((el) => (el.textContent = CONFIG.guaranteeDays));
+} else {
+  $$(".js-guarantee-section, .js-guarantee-row, .js-guarantee-faq").forEach((el) => (el.hidden = true));
 }
 
-// ---------- Video de venta ----------
-if (CONFIG.videoUrl) {
-  const video = $(".js-video");
-  const play = $(".js-play");
-  video.classList.add("has-video");
-  play.hidden = false;
-  $(".js-play-caption").hidden = false;
-  play.addEventListener("click", () => {
-    const iframe = document.createElement("iframe");
-    iframe.src = CONFIG.videoUrl;
-    iframe.title = "Video de presentación de Plenitud";
-    iframe.allow = "autoplay; fullscreen; picture-in-picture";
-    iframe.allowFullscreen = true;
-    video.replaceChildren(iframe);
-  });
-}
+// ---------- Escalonado de entrada del hero ----------
+$$(".hero-in").forEach((el, i) => el.style.setProperty("--i", i));
 
-// ---------- Foto opcional de la autora ----------
-$$(".js-optional-img").forEach((img) => {
-  const drop = () => img.remove();
-  if (img.complete && img.naturalWidth === 0) drop();
-  else img.addEventListener("error", drop, { once: true });
-});
-
-// ---------- Test de síntomas ----------
-const opts = $$(".opt");
-const count = $(".js-quiz-count");
-const msg = $(".js-quiz-msg");
-const quizCta = $(".js-quiz-cta");
-const messages = [
-  "Empieza marcando los síntomas que sientes.",
-  "Es un comienzo. Entender qué lo provoca ya te da ventaja.",
-  "Tu cuerpo te está hablando. El Método 5R te ayuda a escucharlo.",
-  "No estás sola: así se siente la mayoría en esta etapa. Hay mucho que puedes hacer.",
-  "Estás cargando mucho. Mereces un plan claro para sentirte tú otra vez.",
-];
-const updateQuiz = () => {
-  const n = opts.filter((o) => o.getAttribute("aria-pressed") === "true").length;
-  count.textContent = n;
-  msg.textContent = messages[n === 0 ? 0 : n <= 1 ? 1 : n <= 3 ? 2 : n <= 5 ? 3 : 4];
-  quizCta.hidden = n === 0;
-};
-opts.forEach((o) =>
-  o.addEventListener("click", () => {
-    o.setAttribute("aria-pressed", String(o.getAttribute("aria-pressed") !== "true"));
-    updateQuiz();
+// ---------- Tarjetas que se voltean ----------
+$$(".flip").forEach((card) =>
+  card.addEventListener("click", () => {
+    card.setAttribute("aria-pressed", String(card.getAttribute("aria-pressed") !== "true"));
   })
 );
 
-// ---------- Antes / Después ----------
-const sw = $(".switch");
-const list = $(".shift__list");
-const setState = (state, animate = true) => {
-  sw.dataset.state = state;
-  $$(".switch__btn", sw).forEach((b) => b.setAttribute("aria-selected", String(b.dataset.state === state)));
-  const apply = () => {
-    $$("span[data-hoy]", list).forEach((s) => (s.textContent = s.dataset[state]));
-    list.dataset.state = state;
-    list.classList.remove("is-swapping");
-  };
-  if (!animate || reduceMotion) return apply();
-  list.classList.add("is-swapping");
-  setTimeout(apply, 280);
-};
-$$(".switch__btn", sw).forEach((b) => b.addEventListener("click", () => setState(b.dataset.state)));
-setState("hoy", false);
-
-// ---------- Testimonios ----------
-const voices = $$(".voice");
-const pos = $(".js-pos");
-let current = 0;
-let timer;
-const show = (i) => {
-  current = (i + voices.length) % voices.length;
-  voices.forEach((v, k) => v.classList.toggle("is-active", k === current));
-  pos.textContent = current + 1;
-};
-const autoplay = () => {
-  clearInterval(timer);
-  if (!reduceMotion) timer = setInterval(() => show(current + 1), 7000);
-};
-$(".js-prev").addEventListener("click", () => { show(current - 1); autoplay(); });
-$(".js-next").addEventListener("click", () => { show(current + 1); autoplay(); });
-autoplay();
+// ---------- Visor de páginas ----------
+const viewer = $(".js-viewer");
+const viewerImg = $(".js-viewer-img");
+$$(".page").forEach((p) =>
+  p.addEventListener("click", () => {
+    viewerImg.src = p.dataset.src;
+    viewerImg.alt = $("img", p).alt;
+    viewer.showModal();
+  })
+);
+$(".js-viewer-close").addEventListener("click", () => viewer.close());
+viewer.addEventListener("click", (e) => { if (e.target === viewer) viewer.close(); });
 
 // ---------- FAQ: una abierta a la vez ----------
 const faqs = $$(".accordion details");
@@ -152,21 +69,31 @@ reveals.forEach((el) => {
 });
 const settle = (el) => {
   el.classList.add("is-in");
-  // Libera transform/transition para que los estados :hover y :active funcionen
-  setTimeout(() => el.classList.remove("reveal", "is-in"), 1600);
+  // Libera transform/transition para que :hover y :active funcionen después
+  setTimeout(() => el.classList.remove("reveal", "is-in"), 1500);
 };
 if ("IntersectionObserver" in window && !reduceMotion) {
   const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) { settle(e.target); io.unobserve(e.target); }
-    });
+    entries.forEach((e) => { if (e.isIntersecting) { settle(e.target); io.unobserve(e.target); } });
   }, { rootMargin: "0px 0px -8% 0px", threshold: 0.1 });
   reveals.forEach((el) => io.observe(el));
 } else {
   reveals.forEach((el) => el.classList.remove("reveal"));
 }
 
-// ---------- Barra fija móvil ----------
+// ---------- El abanico de páginas se abre al entrar ----------
+const deck = $(".js-deck");
+new IntersectionObserver(([e]) => deck.classList.toggle("is-open", e.isIntersecting), { threshold: 0.45 }).observe(deck);
+
+// ---------- Línea de tiempo de bonos (respaldo sin GSAP) ----------
+const tls = $$(".tl");
+const timeline = $(".js-timeline");
+const tlObserver = new IntersectionObserver((entries) => {
+  entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("is-lit"); });
+}, { rootMargin: "0px 0px -35% 0px" });
+tls.forEach((t) => tlObserver.observe(t));
+
+// ---------- Barra fija móvil y nav ----------
 const sticky = $(".sticky-cta");
 const vis = { hero: true, offer: false, final: false };
 const updateSticky = () => {
@@ -175,56 +102,73 @@ const updateSticky = () => {
   sticky.setAttribute("aria-hidden", String(!show));
   $("a", sticky).tabIndex = show ? 0 : -1;
 };
-[["hero", ".hero"], ["offer", "#oferta"], ["final", ".final"]].forEach(([k, sel]) => {
+[["hero", ".hero"], ["offer", "#precio"], ["final", ".final"]].forEach(([k, sel]) => {
   new IntersectionObserver(([e]) => { vis[k] = e.isIntersecting; updateSticky(); }).observe($(sel));
 });
 
-// ---------- GSAP: texto que se revela, curva hormonal, pilares ----------
+// ---------- Inclinación del libro con el puntero (escritorio) ----------
+const tilt = $(".js-tilt");
+if (finePointer && !reduceMotion) {
+  const hero = $(".hero");
+  let raf = 0;
+  hero.addEventListener("pointermove", (e) => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      const r = hero.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      tilt.style.transform = `rotateY(${x * 16}deg) rotateX(${-y * 10}deg)`;
+    });
+  });
+  hero.addEventListener("pointerleave", () => (tilt.style.transform = ""));
+  tilt.style.transition = "transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)";
+}
+
+// ---------- Texto que se enciende: separar en palabras ----------
+$$(".js-scrub").forEach((el) => {
+  el.innerHTML = el.textContent.trim().split(/\s+/).map((w) => `<span class="w">${w}</span>`).join(" ");
+});
+
+// ---------- GSAP ----------
 window.addEventListener("load", () => {
-  const scrub = $(".js-scrub");
-  const words = scrub.textContent.trim().split(/\s+/);
-  scrub.innerHTML = words.map((w) => `<span class="w">${w}</span>`).join(" ");
-
-  const path = $(".js-curve");
-  const len = path.getTotalLength();
-
   if (reduceMotion || !window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
   document.documentElement.classList.add("has-gsap");
 
-  // 1. Palabras que se encienden al hacer scroll (cuenta la historia en orden)
-  gsap.to(".js-scrub .w", {
-    opacity: 1, stagger: 0.08, ease: "none",
-    scrollTrigger: { trigger: scrub, start: "top 80%", end: "bottom 45%", scrub: true },
-  });
+  // 1. Entrada del libro (el abanico de bonos se anima en CSS)
+  gsap.set(".js-book", { rotationY: -24, rotationX: 4 });
+  gsap.from(".js-book", { y: 60, rotationY: -70, opacity: 0, duration: 1.6, ease: "expo.out", delay: 0.15 });
+  gsap.fromTo(".book__sheen", { xPercent: -100 }, { xPercent: 120, duration: 1.6, ease: "power2.inOut", delay: 1.1, repeat: -1, repeatDelay: 5 });
 
-  // 2. La curva del estrógeno se dibuja mientras la lees
-  gsap.fromTo(path, { strokeDasharray: len, strokeDashoffset: len }, {
-    strokeDashoffset: 0, ease: "none",
-    scrollTrigger: { trigger: ".why__chart", start: "top 75%", end: "bottom 70%", scrub: 0.6 },
-  });
-  gsap.from(".curve__area", {
-    opacity: 0, ease: "none",
-    scrollTrigger: { trigger: ".why__chart", start: "center 70%", end: "bottom 65%", scrub: true },
-  });
-
-  // 3. Pilares: crecen al entrar y se atenúan al salir (jerarquía: el pilar actual manda)
-  if (matchMedia("(min-width: 900px)").matches) {
-    $$(".pillar").forEach((card) => {
-      gsap.fromTo(card, { scale: 0.9, opacity: 0.4 }, {
-        scale: 1, opacity: 1, ease: "none",
-        scrollTrigger: { trigger: card, start: "top 95%", end: "top 55%", scrub: true },
-      });
-      gsap.to(card, {
-        opacity: 0.35, scale: 0.96, ease: "none",
-        scrollTrigger: { trigger: card, start: "bottom 35%", end: "bottom 5%", scrub: true },
-      });
-    });
-  }
-
-  // 4. Profundidad suave del amanecer del hero
-  gsap.to(".hero .bloom", {
-    yPercent: 18, ease: "none",
+  // 2. Al bajar, el libro gira un poco y la escena se aleja (profundidad)
+  gsap.fromTo(".js-book", { rotationY: -24, y: 0 }, {
+    rotationY: -34, y: -30, ease: "none", immediateRender: false,
     scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
+  });
+
+  // 3. Frases clave: las palabras se encienden en orden de lectura
+  $$(".js-scrub").forEach((el) => {
+    gsap.to($$(".w", el), {
+      opacity: 1, stagger: 0.1, ease: "none",
+      scrollTrigger: { trigger: el, start: "top 82%", end: "bottom 50%", scrub: true },
+    });
+  });
+
+  // 4. Capítulos: el carrusel se desplaza en horizontal mientras bajas (solo escritorio)
+  ScrollTrigger.matchMedia({
+    "(min-width: 960px)": () => {
+      const track = $(".js-track");
+      const distance = () => track.scrollWidth - window.innerWidth;
+      gsap.to(track, {
+        x: () => -distance(), ease: "none",
+        scrollTrigger: { trigger: ".chapters__pin", start: "top top", end: () => `+=${distance()}`, pin: true, scrub: 1, invalidateOnRefresh: true },
+      });
+    },
+  });
+
+  // 5. Línea de tiempo de bonos: el riel se llena al avanzar
+  gsap.fromTo(timeline, { "--fill": 0 }, {
+    "--fill": 1, ease: "none",
+    scrollTrigger: { trigger: timeline, start: "top 70%", end: "bottom 60%", scrub: true },
   });
 });

@@ -1,54 +1,62 @@
-# Landing Menopausia (Plenitud)
+# Landing: Menopausia sin miedo (Nexo Editorial)
 
-Página de venta para un curso digital sobre menopausia, pensada para vender en Hotmart.
+Página de venta del ebook **Menopausia sin miedo** + 3 bonos, para Hotmart.
 HTML + CSS + JS puro, sin build: sube la carpeta tal cual a cualquier hosting (Netlify, Vercel, Hostinger, GitHub Pages).
 
-Construida con las skills del repo `gpt-taste` (estructura AIDA, movimiento con GSAP), `high-end-visual-design` (vibe Editorial Luxury, tarjetas de doble marco, botones con icono anidado, menú flotante) y `design-taste-frontend` (reglas anti-plantilla y accesibilidad).
-
-## Estructura de venta
-
-1. Barra de oferta de lanzamiento (con cuenta regresiva opcional)
-2. Hero con promesa clara + espacio para el video de venta (VSL)
-3. Prueba social: valoración, alumnas, acceso, garantía
-4. **Test interactivo de síntomas**: la visitante marca lo que siente y recibe un mensaje + botón de compra
-5. "No es tu culpa": texto que se enciende al hacer scroll + curva hormonal que se dibuja
-6. **Método 5R**: título fijo mientras pasan los 5 pilares (Reconoce, Repara, Regula, Recarga, Reconecta)
-7. Antes / Después con interruptor
-8. Marquesina de beneficios
-9. Testimonios
-10. Oferta: suma de valor tachada (USD 175) frente al precio de hoy
-11. Sello de garantía de 7 días
-12. Para quién es / para quién no es
-13. Autora
-14. Preguntas frecuentes
-15. Cierre con llamado final + aviso médico
-16. En móvil: barra fija con precio y botón
-
-## Antes de publicar
-
-Todo lo editable está arriba en `main.js`, en `CONFIG`:
+## Antes de publicar (en `main.js`, objeto `CONFIG`)
 
 | Campo | Qué poner |
 |---|---|
-| `checkoutUrl` | Tu link de pago de Hotmart. Mientras tenga `XXXX`, los botones llevan a la sección de precio |
-| `price`, `oldPrice`, `installments` | Precio actual, precio tachado y cuotas |
-| `videoUrl` | Link *embed* de tu VSL (YouTube, Vimeo, Panda). Vacío = se muestra solo el póster |
-| `deadline` | Fecha **real** de fin de la oferta (ej. `"2026-10-20T23:59:00-05:00"`). `null` = sin cuenta regresiva |
+| `checkoutUrl` | **Tu link de checkout de Hotmart.** Mientras tenga `XXXX`, los botones bajan a la sección de precio |
+| `price` | `US$17.97` |
+| `bumpPrice` | `US$9.97` (Plan Menopausia +40, se añade en el checkout) |
+| `guaranteeDays` | **Confirma los días configurados en Hotmart** (está en 7, el mínimo de Hotmart). Con `null` se ocultan todas las menciones de garantía |
 
-Además, en `index.html`:
+En `index.html`, pie de página: enlaza **Términos** y **Privacidad** y cambia `hola@tudominio.com` por tu correo.
 
-- **Datos de ejemplo:** la autora "Lucía Ferrer", sus cifras, la valoración 4,9, "+1.800 alumnas" y los testimonios son **inventados**. Reemplázalos por datos reales (y usa testimonios solo con permiso). Están marcados con comentarios `EJEMPLO`.
-- **Valores de los bonos** (USD 97, 17, 27, 19, 15): ajústalos a tu oferta real.
-- **Foto de la autora:** sube `img/autora.jpg` (900x1125, 4:5). Si no existe, se ve un monograma con degradado.
-- **Imagen para compartir:** sube `img/og.jpg` (1200x630).
-- **Footer:** enlaza Términos y Privacidad y cambia el correo de contacto.
+## Lo que respeta esta versión (según tu brief)
 
-## Notas
+- Sin precio tachado, sin cuenta regresiva, sin testimonios ni cifras de ventas.
+- Sin promesas médicas: el copy habla de comprender, observar, actuar, cuidarse y saber cuándo consultar.
+- El producto se presenta solo bajo **Nexo Editorial** (sin autora ni credenciales).
+- Las fuentes (NIH, ACOG, The Menopause Society, HHS) se citan como referencia, aclarando que no respaldan la guía.
+- Aviso médico y aviso de "no afiliado a Meta" en el pie (útil para Meta Ads).
 
-- El aviso médico del footer es importante: el curso es educativo y no debe prometer curas ni reemplazar a un profesional de salud (también evita rechazos de anuncios en Meta y Google).
-- Tipografías: Boska (títulos) y Satoshi (texto), desde Fontshare. Iconos: Phosphor. Animaciones: GSAP + ScrollTrigger desde cdnjs.
-- Respeta `prefers-reduced-motion` (sin animaciones) y el modo oscuro del sistema.
-- Si GSAP no carga, todo el contenido sigue visible.
+Cuando tengas **testimonios reales con autorización**, se pueden añadir en una sección propia.
+
+## Estructura
+
+1. Hero con la frase de la clienta, libro en 3D y los 3 bonos en abanico
+2. Marquesina con los temas de la guía
+3. Cuatro dolores en tarjetas que se voltean (sueño, cuerpo, emociones, confusión)
+4. La idea central: texto que se enciende al hacer scroll + "Antes / Después de leerla"
+5. Los 10 capítulos en un carrusel horizontal (fijo al hacer scroll en escritorio, deslizable en móvil)
+6. "Así se ve por dentro": páginas reales en abanico, con visor ampliado
+7. Las 4 preguntas del capítulo 10, en tarjetas que se apilan
+8. Bonos en línea de tiempo (días 0, 3, 6 y 8)
+9. Oferta: lo incluido, precio y order bump opcional
+10. Garantía · Para quién es · Nexo Editorial y fuentes · Preguntas frecuentes
+11. Cierre con la última frase del libro
+12. Barra fija con precio y botón en móvil
+
+## Archivos
+
+| Ruta | Qué es |
+|---|---|
+| `index.html` | Estructura y textos |
+| `styles.css` | Diseño: paleta de marca en `:root`, modo oscuro automático |
+| `main.js` | Configuración, animaciones (GSAP + ScrollTrigger) e interacciones |
+| `assets/covers/` | Portadas originales extraídas de tus PDF |
+| `assets/pages/` | 10 páginas interiores de muestra (solo vista previa) |
+| `assets/og.jpg` | Imagen al compartir el link en WhatsApp o redes (1200x630) |
+
+Los PDF completos **no** están en el repo: son el producto que vendes.
+
+## Notas técnicas
+
+- Tipografías: Playfair Display (títulos, como tus portadas) y Satoshi (texto). Iconos: Phosphor.
+- Respeta `prefers-reduced-motion`: sin animaciones para quien las tenga desactivadas.
+- Si GSAP no carga, todo el contenido sigue visible y usable.
 
 ## Probar en local
 
