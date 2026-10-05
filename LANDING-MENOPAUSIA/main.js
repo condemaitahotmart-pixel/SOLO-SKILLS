@@ -6,21 +6,21 @@ const CONFIG = {
   bumpPrice: "US$9.97",
   // Días de garantía configurados en Hotmart. Pon null para ocultar todas las menciones de garantía.
   guaranteeDays: 7,
+  // Testimonios REALES y con autorización. Mientras la lista esté vacía, la sección no aparece.
+  // Ejemplo: { quote: "Texto del testimonio", name: "Nombre", detail: "48 años, Lima" }
+  testimonials: [],
 };
 // =============================================================
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const root = document.documentElement;
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const desktop = matchMedia("(min-width: 960px)");
 const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
-
-document.documentElement.classList.add("js");
+const isDesktop = () => matchMedia("(min-width: 960px)").matches;
 
 // ---------- Datos de la oferta ----------
-if (!CONFIG.checkoutUrl.includes("XXXX")) {
-  $$(".js-checkout").forEach((a) => (a.href = CONFIG.checkoutUrl));
-}
+if (!CONFIG.checkoutUrl.includes("XXXX")) $$(".js-checkout").forEach((a) => (a.href = CONFIG.checkoutUrl));
 $$(".js-price").forEach((el) => (el.textContent = CONFIG.price));
 $$(".js-bump-price").forEach((el) => (el.textContent = CONFIG.bumpPrice));
 $$(".js-year").forEach((el) => (el.textContent = new Date().getFullYear()));
@@ -30,34 +30,23 @@ if (CONFIG.guaranteeDays) {
   $$(".js-guarantee-section, .js-guarantee-row, .js-guarantee-faq").forEach((el) => (el.hidden = true));
 }
 
-// ---------- Escalonado de entrada del hero ----------
-$$(".hero-in").forEach((el, i) => el.style.setProperty("--i", i));
+// ---------- Testimonios reales ----------
+if (CONFIG.testimonials.length) {
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  $(".js-voices").innerHTML = CONFIG.testimonials.map((t) =>
+    `<figure class="voice reveal"><blockquote>“${esc(t.quote)}”</blockquote><figcaption><strong>${esc(t.name)}</strong>${esc(t.detail || "")}</figcaption></figure>`
+  ).join("");
+  $(".voices").hidden = false;
+}
 
-// ---------- Tarjetas que se voltean ----------
-$$(".flip").forEach((card) =>
-  card.addEventListener("click", () => {
-    card.setAttribute("aria-pressed", String(card.getAttribute("aria-pressed") !== "true"));
-  })
-);
-
-// ---------- Visor de páginas ----------
-const viewer = $(".js-viewer");
-const viewerImg = $(".js-viewer-img");
-$$(".page").forEach((p) =>
-  p.addEventListener("click", () => {
-    viewerImg.src = p.dataset.src;
-    viewerImg.alt = $("img", p).alt;
-    viewer.showModal();
-  })
-);
-$(".js-viewer-close").addEventListener("click", () => viewer.close());
-viewer.addEventListener("click", (e) => { if (e.target === viewer) viewer.close(); });
+// ---------- Capítulos desplegables ----------
+$$(".ch__row").forEach((b) => b.addEventListener("click", () => {
+  b.setAttribute("aria-expanded", String(b.getAttribute("aria-expanded") !== "true"));
+}));
 
 // ---------- FAQ: una abierta a la vez ----------
 const faqs = $$(".accordion details");
-faqs.forEach((d) => d.addEventListener("toggle", () => {
-  if (d.open) faqs.forEach((o) => o !== d && (o.open = false));
-}));
+faqs.forEach((d) => d.addEventListener("toggle", () => { if (d.open) faqs.forEach((o) => o !== d && (o.open = false)); }));
 
 // ---------- Entradas al hacer scroll ----------
 const reveals = $$(".reveal");
@@ -67,33 +56,27 @@ reveals.forEach((el) => {
   el.style.setProperty("--i", Math.min(i, 6));
   groups.set(el.parentElement, i + 1);
 });
-const settle = (el) => {
-  el.classList.add("is-in");
-  // Libera transform/transition para que :hover y :active funcionen después
-  setTimeout(() => el.classList.remove("reveal", "is-in"), 1500);
-};
 if ("IntersectionObserver" in window && !reduceMotion) {
   const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => { if (e.isIntersecting) { settle(e.target); io.unobserve(e.target); } });
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("is-in");
+      io.unobserve(e.target);
+      setTimeout(() => e.target.classList.remove("reveal", "is-in"), 1600);
+    });
   }, { rootMargin: "0px 0px -8% 0px", threshold: 0.1 });
   reveals.forEach((el) => io.observe(el));
 } else {
   reveals.forEach((el) => el.classList.remove("reveal"));
 }
 
-// ---------- El abanico de páginas se abre al entrar ----------
-const deck = $(".js-deck");
-new IntersectionObserver(([e]) => deck.classList.toggle("is-open", e.isIntersecting), { threshold: 0.45 }).observe(deck);
-
-// ---------- Línea de tiempo de bonos (respaldo sin GSAP) ----------
-const tls = $$(".tl");
-const timeline = $(".js-timeline");
-const tlObserver = new IntersectionObserver((entries) => {
+// ---------- Bonos que se desbloquean ----------
+const unlockObs = new IntersectionObserver((entries) => {
   entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("is-lit"); });
-}, { rootMargin: "0px 0px -35% 0px" });
-tls.forEach((t) => tlObserver.observe(t));
+}, { rootMargin: "0px 0px -40% 0px" });
+$$(".ul").forEach((u) => unlockObs.observe(u));
 
-// ---------- Barra fija móvil y nav ----------
+// ---------- Barra fija móvil ----------
 const sticky = $(".sticky-cta");
 const vis = { hero: true, offer: false, final: false };
 const updateSticky = () => {
@@ -106,69 +89,132 @@ const updateSticky = () => {
   new IntersectionObserver(([e]) => { vis[k] = e.isIntersecting; updateSticky(); }).observe($(sel));
 });
 
-// ---------- Inclinación del libro con el puntero (escritorio) ----------
-const tilt = $(".js-tilt");
-if (finePointer && !reduceMotion) {
-  const hero = $(".hero");
-  let raf = 0;
-  hero.addEventListener("pointermove", (e) => {
-    cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => {
-      const r = hero.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      tilt.style.transform = `rotateY(${x * 16}deg) rotateX(${-y * 10}deg)`;
-    });
-  });
-  hero.addEventListener("pointerleave", () => (tilt.style.transform = ""));
-  tilt.style.transition = "transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)";
-}
+// ---------- Posición de la flor 3D por sección (la lee bloom.js) ----------
+// x/y en unidades de pantalla (-1 a 1), s = escala. En móvil se acerca al centro.
+window.__bloom = { x: 0, y: -0.1, s: 1 };
+const BLOOM_SPOTS = {
+  hero: { x: 0.56, y: -0.02, s: 0.86, mx: 0.42, my: 0.74, ms: 0.85 },
+  whispers: { x: 0.72, y: -0.62, s: 0.5, mx: 0.5, my: -0.72, ms: 0.6 },
+  manifesto: { x: 0, y: 0, s: 0.9, mx: 0, my: -0.5, ms: 0.75 },
+  offer: { x: 0.55, y: 0.05, s: 0.85, mx: 0.55, my: 0.92, ms: 0.45 },
+  guarantee: { x: -0.7, y: -0.5, s: 0.45, mx: -0.5, my: -0.75, ms: 0.5 },
+  final: { x: 0, y: 0.8, s: 0.6, mx: 0, my: 0.78, ms: 0.7 },
+};
+const setBloom = (key) => {
+  const spot = BLOOM_SPOTS[key];
+  if (!spot) return;
+  if (isDesktop()) Object.assign(window.__bloom, { x: spot.x, y: spot.y, s: spot.s });
+  else Object.assign(window.__bloom, { x: spot.mx ?? spot.x * 0.45, y: spot.my ?? spot.y, s: spot.ms ?? spot.s * 0.85 });
+};
 
-// ---------- Texto que se enciende: separar en palabras ----------
-$$(".js-scrub").forEach((el) => {
-  el.innerHTML = el.textContent.trim().split(/\s+/).map((w) => `<span class="w">${w}</span>`).join(" ");
-});
+setBloom("hero");
 
-// ---------- GSAP ----------
-window.addEventListener("load", () => {
-  if (reduceMotion || !window.gsap || !window.ScrollTrigger) return;
+// ---------- Intro, scroll suave y escenas con GSAP ----------
+const ready = () => root.classList.add("is-ready");
+
+window.addEventListener("DOMContentLoaded", () => {
+  const hasGsap = window.gsap && window.ScrollTrigger;
+  const loader = $(".loader");
+  let seen = false;
+  try { seen = sessionStorage.getItem("nexo-intro") === "1"; } catch (e) {}
+
+  if (!hasGsap || reduceMotion || seen) {
+    ready();
+  } else {
+    try { sessionStorage.setItem("nexo-intro", "1"); } catch (e) {}
+    loader.classList.add("is-on");
+    gsap.timeline({ onComplete: () => loader.remove() })
+      .to(".loader__line span", { y: 0, duration: 1, ease: "expo.out", stagger: 0.12 })
+      .to(".loader__bar span", { scaleX: 1, duration: 0.9, ease: "power2.inOut" }, "-=0.6")
+      .addLabel("open", "+=0.2")
+      .add(ready, "open+=0.25")
+      .to(loader, { yPercent: -100, duration: 1, ease: "expo.inOut" }, "open");
+    setTimeout(ready, 3500);
+  }
+
+  if (!hasGsap || reduceMotion) return;
   gsap.registerPlugin(ScrollTrigger);
-  document.documentElement.classList.add("has-gsap");
+  root.classList.add("has-gsap");
 
-  // 1. Entrada del libro (el abanico de bonos se anima en CSS)
-  gsap.set(".js-book", { rotationY: -24, rotationX: 4 });
-  gsap.from(".js-book", { y: 60, rotationY: -70, opacity: 0, duration: 1.6, ease: "expo.out", delay: 0.15 });
-  gsap.fromTo(".book__sheen", { xPercent: -100 }, { xPercent: 120, duration: 1.6, ease: "power2.inOut", delay: 1.1, repeat: -1, repeatDelay: 5 });
+  // Scroll suave con inercia (escritorio; en táctil se mantiene el scroll nativo)
+  if (window.Lenis) {
+    const lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 1 });
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+    $$('a[href^="#"]').forEach((a) => a.addEventListener("click", (e) => {
+      const id = a.getAttribute("href");
+      if (id.length < 2 || !document.querySelector(id)) return;
+      e.preventDefault();
+      lenis.scrollTo(id, { offset: -20, duration: 1.4 });
+    }));
+  }
 
-  // 2. Al bajar, el libro gira un poco y la escena se aleja (profundidad)
-  gsap.fromTo(".js-book", { rotationY: -24, y: 0 }, {
-    rotationY: -34, y: -30, ease: "none", immediateRender: false,
-    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
-  });
+  // 2. Manifiesto: la primera frase se aleja y aparece la segunda (el giro de la idea)
+  gsap.timeline({
+    scrollTrigger: { trigger: ".manifesto", start: "top top", end: "+=140%", pin: ".manifesto__pin", scrub: 1 },
+  })
+    .to(".js-mf-a", { scale: 0.86, opacity: 0, filter: "blur(10px)", ease: "power1.in", duration: 1 })
+    .fromTo(".js-mf-b", { opacity: 0, y: 70, scale: 1.08, filter: "blur(10px)" }, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", ease: "power2.out", duration: 1 }, "-=0.35")
+    .to({}, { duration: 0.4 });
+  ScrollTrigger.create({ trigger: ".manifesto", start: "top top", end: "+=140%", onUpdate: (s) => { window.__bloom.s = (isDesktop() ? 0.9 : 0.9) * (1 + s.progress * 0.35); } });
 
-  // 3. Frases clave: las palabras se encienden en orden de lectura
-  $$(".js-scrub").forEach((el) => {
-    gsap.to($$(".w", el), {
-      opacity: 1, stagger: 0.1, ease: "none",
-      scrollTrigger: { trigger: el, start: "top 82%", end: "bottom 50%", scrub: true },
-    });
-  });
-
-  // 4. Capítulos: el carrusel se desplaza en horizontal mientras bajas (solo escritorio)
+  // 3. Dolores: paneles que pasan en horizontal mientras bajas (escritorio)
   ScrollTrigger.matchMedia({
     "(min-width: 960px)": () => {
-      const track = $(".js-track");
-      const distance = () => track.scrollWidth - window.innerWidth;
+      const track = $(".js-pains");
+      const dist = () => track.scrollWidth - window.innerWidth;
       gsap.to(track, {
-        x: () => -distance(), ease: "none",
-        scrollTrigger: { trigger: ".chapters__pin", start: "top top", end: () => `+=${distance()}`, pin: true, scrub: 1, invalidateOnRefresh: true },
+        x: () => -dist(), ease: "none",
+        scrollTrigger: { trigger: ".pains__pin", start: "top top", end: () => `+=${dist()}`, pin: true, scrub: 1, invalidateOnRefresh: true },
+      });
+      $$(".panel__art i").forEach((icon) => {
+        gsap.fromTo(icon, { rotate: -12, scale: 0.9 }, {
+          rotate: 12, scale: 1.08, ease: "none",
+          scrollTrigger: { trigger: ".pains__pin", start: "top top", end: () => `+=${dist()}`, scrub: true },
+        });
       });
     },
   });
 
-  // 5. Línea de tiempo de bonos: el riel se llena al avanzar
-  gsap.fromTo(timeline, { "--fill": 0 }, {
+  // 4. Riel de los bonos que se llena al avanzar
+  gsap.fromTo(".js-unlock", { "--fill": 0 }, {
     "--fill": 1, ease: "none",
-    scrollTrigger: { trigger: timeline, start: "top 70%", end: "bottom 60%", scrub: true },
+    scrollTrigger: { trigger: ".js-unlock", start: "top 65%", end: "bottom 60%", scrub: true },
   });
+
+  // 5. Titular final que sube desde su máscara
+  gsap.from(".final__title .line > span", {
+    yPercent: 110, duration: 1.3, ease: "expo.out", stagger: 0.12,
+    scrollTrigger: { trigger: ".final", start: "top 60%", once: true },
+  });
+
+  // 6. Botones magnéticos (escritorio): invitan al clic sin moverse de su sitio
+  if (finePointer) {
+    $$(".magnetic").forEach((btn) => {
+      const xTo = gsap.quickTo(btn, "x", { duration: 0.6, ease: "power3.out" });
+      const yTo = gsap.quickTo(btn, "y", { duration: 0.6, ease: "power3.out" });
+      btn.addEventListener("pointermove", (e) => {
+        const r = btn.getBoundingClientRect();
+        xTo((e.clientX - r.left - r.width / 2) * 0.25);
+        yTo((e.clientY - r.top - r.height / 2) * 0.35);
+      });
+      btn.addEventListener("pointerleave", () => { xTo(0); yTo(0); });
+    });
+  }
+
+  // 7. Noche y día (se crea al final, después de las secciones fijas, para medir bien): el fondo cambia de color según la sección (cuenta la historia: de la confusión a la claridad)
+  $$("main [data-theme], footer[data-theme]").forEach((sec) => {
+    ScrollTrigger.create({
+      trigger: sec, start: "top 55%", end: "bottom 55%",
+      onToggle: (self) => {
+        if (!self.isActive) return;
+        document.body.dataset.theme = sec.dataset.theme;
+        const key = [...sec.classList].find((c) => BLOOM_SPOTS[c]);
+        if (key) setBloom(key);
+      },
+    });
+  });
+
+  window.addEventListener("load", () => ScrollTrigger.refresh());
 });

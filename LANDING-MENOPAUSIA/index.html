@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Menopausia sin miedo | Guía práctica para mujeres +40</title>
   <meta name="description" content="Entiende lo que estás viviendo en la perimenopausia y la menopausia, aprende qué observar y descubre por dónde empezar a cuidarte. Ebook + 3 bonos de Nexo Editorial." />
-  <meta name="theme-color" content="#f6efe4" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#171316" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#1a0d15" />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Menopausia sin miedo | Guía práctica para mujeres +40" />
@@ -16,20 +15,37 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet" />
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/@phosphor-icons/web@2.1.1" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }</script>
 
-  <link rel="preload" as="image" href="assets/covers/ebook.jpg" />
   <link rel="stylesheet" href="styles.css" />
+  <script>document.documentElement.classList.add("js");</script>
 </head>
-<body>
+<body data-theme="night">
   <a class="skip" href="#contenido">Saltar al contenido</a>
+
+  <!-- Intro de marca (solo la primera visita de la sesión; la crea main.js) -->
+  <div class="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <p class="loader__line"><span>Menopausia</span></p>
+      <p class="loader__line loader__line--it"><span>sin miedo</span></p>
+      <div class="loader__bar"><span></span></div>
+    </div>
+  </div>
+
+  <!-- Escena 3D fija detrás de todo -->
+  <div class="scene" aria-hidden="true">
+    <div class="scene__halo"></div>
+    <canvas class="scene__canvas js-bloom"></canvas>
+    <div class="scene__fallback"></div>
+  </div>
   <div class="grain" aria-hidden="true"></div>
 
-  <!-- NAV flotante -->
   <header class="nav">
     <div class="nav__pill">
       <a href="#top" class="brand" aria-label="Nexo Editorial, inicio">
@@ -37,7 +53,7 @@
         <span class="brand__name">Nexo Editorial</span>
       </a>
       <nav class="nav__links" aria-label="Principal">
-        <a href="#por-dentro">Por dentro</a>
+        <a href="#capitulos">Contenido</a>
         <a href="#bonos">Bonos</a>
         <a href="#precio">Precio</a>
         <a href="#preguntas">Preguntas</a>
@@ -51,201 +67,136 @@
 
   <main id="contenido">
 
-    <!-- ============ HERO ============ -->
-    <section class="hero" id="top">
-      <div class="wash" aria-hidden="true">
-        <span class="wash__orb wash__orb--rose"></span>
-        <span class="wash__orb wash__orb--sage"></span>
-        <span class="wash__orb wash__orb--gold"></span>
-      </div>
-
-      <div class="wrap hero__grid">
-        <div class="hero__copy">
-          <p class="tag hero-in">Guía práctica para mujeres +40</p>
-          <h1 class="hero__title hero-in">“Mi cuerpo cambió <em>y no sé qué hacer.</em>”</h1>
-          <p class="hero__sub hero-in">Si alguna vez lo pensaste, esta guía es para ti. Entiende lo que estás viviendo y descubre por dónde empezar a cuidarte.</p>
-          <div class="hero__ctas hero-in">
-            <a class="btn btn--primary btn--lg btn--shine js-checkout" href="#precio">
+    <!-- ===================== HERO (noche) ===================== -->
+    <section class="hero" id="top" data-theme="night">
+      <div class="wrap hero__inner">
+        <p class="kicker split-up"><span>Menopausia sin miedo · Guía práctica para mujeres +40</span></p>
+        <h1 class="hero__title">
+          <span class="line"><span>“Mi cuerpo cambió</span></span>
+          <span class="line"><span><em>y no sé qué hacer.”</em></span></span>
+        </h1>
+        <p class="hero__sub split-up"><span>Una guía para entender lo que estás viviendo, saber qué observar y empezar a cuidarte. Sin promesas mágicas.</span></p>
+        <div class="hero__ctas split-up">
+          <span>
+            <a class="btn btn--primary btn--lg btn--shine magnetic js-checkout" href="#precio">
               <span>Quiero mi guía</span>
               <span class="btn__icon" aria-hidden="true"><i class="ph ph-arrow-right"></i></span>
             </a>
-            <a class="btn btn--ghost btn--lg" href="#por-dentro">Ver por dentro</a>
-          </div>
-          <p class="hero__meta hero-in"><span>Ebook + 3 bonos</span><span class="js-price">US$17.97</span><span>Acceso inmediato</span></p>
+            <a class="btn btn--ghost btn--lg" href="#capitulos">Ver qué incluye</a>
+          </span>
         </div>
+        <p class="hero__meta split-up"><span>Ebook + 3 bonos <b class="js-price">US$17.97</b> Acceso inmediato</span></p>
+      </div>
+    </section>
 
-        <!-- Escena de libros en 3D -->
-        <div class="stage" aria-label="Portada del ebook Menopausia sin miedo y sus tres bonos">
-          <div class="stage__tilt js-tilt">
-            <img class="fan fan--1" src="assets/covers/bono-14-dias.jpg" alt="" width="800" height="1280" />
-            <img class="fan fan--2" src="assets/covers/bono-7-noches.jpg" alt="" width="800" height="1280" />
-            <img class="fan fan--3" src="assets/covers/bono-consulta.jpg" alt="" width="800" height="1280" />
-            <div class="book js-book">
-              <div class="book__front">
-                <img src="assets/covers/ebook.jpg" alt="Portada de Menopausia sin miedo, guía práctica para entender tu cuerpo" width="800" height="1280" fetchpriority="high" />
-                <span class="book__sheen" aria-hidden="true"></span>
+    <!-- ===================== MURO DE FRASES (noche) ===================== -->
+    <section class="whispers" data-theme="night" aria-labelledby="wh-title">
+      <h2 id="wh-title" class="whispers__title reveal">Frases que quizá te has dicho <em>en silencio.</em></h2>
+      <div class="whispers__rows" aria-hidden="true">
+        <div class="whispers__row">
+          <div class="whispers__track">
+            <span>“Duermo, pero no descanso.”</span><span>“No me reconozco.”</span><span>“Este ya no parece mi cuerpo.”</span><span>“¿Esto es normal?”</span><span>“¿Por qué nadie me habló de esto?”</span>
+            <span>“Duermo, pero no descanso.”</span><span>“No me reconozco.”</span><span>“Este ya no parece mi cuerpo.”</span><span>“¿Esto es normal?”</span><span>“¿Por qué nadie me habló de esto?”</span>
+          </div>
+        </div>
+        <div class="whispers__row whispers__row--rev">
+          <div class="whispers__track">
+            <span>“Estoy cansada de estar cansada.”</span><span>“¿Por qué vine a esta habitación?”</span><span>“Siento que mi batería dura menos.”</span><span>“Leo tantos consejos que ya no sé qué hacer.”</span>
+            <span>“Estoy cansada de estar cansada.”</span><span>“¿Por qué vine a esta habitación?”</span><span>“Siento que mi batería dura menos.”</span><span>“Leo tantos consejos que ya no sé qué hacer.”</span>
+          </div>
+        </div>
+      </div>
+      <p class="whispers__answer reveal">Si alguna te suena, no estás exagerando. <em>Y no estás sola.</em></p>
+    </section>
+
+    <!-- ===================== MANIFIESTO con zoom (noche → día) ===================== -->
+    <section class="manifesto" data-theme="night" aria-labelledby="mf-title">
+      <h2 id="mf-title" class="sr-only">La idea central de la guía</h2>
+      <div class="manifesto__pin">
+        <p class="manifesto__a js-mf-a">No se trata de volver a ser la mujer que <em>eras antes.</em></p>
+        <p class="manifesto__b js-mf-b">Se trata de comprender y cuidar mejor a la mujer que <em>eres hoy.</em></p>
+      </div>
+    </section>
+
+    <!-- ===================== DOLORES: paneles horizontales (día) ===================== -->
+    <section class="pains" data-theme="day" aria-labelledby="pains-title">
+      <div class="pains__pin">
+        <div class="wrap pains__head">
+          <h2 id="pains-title" class="h2 reveal">Cuatro cambios. <em>Una forma clara de entenderlos.</em></h2>
+        </div>
+        <div class="pains__viewport">
+          <div class="pains__track js-pains">
+            <article class="panel panel--rose">
+              <div class="panel__art" aria-hidden="true"><i class="ph-thin ph-moon-stars"></i></div>
+              <div class="panel__body">
+                <p class="panel__topic">Sueño y energía</p>
+                <h3 class="panel__quote">“Duermo, pero no descanso.”</h3>
+                <p class="panel__text">Aprendes a distinguir cansancio de falta de recuperación, identificas tu patrón y construyes una transición más amable hacia el descanso.</p>
+                <p class="panel__tool"><i class="ph ph-wrench" aria-hidden="true"></i>Plan de recuperación de energía de 7 días</p>
               </div>
-              <div class="book__pages" aria-hidden="true"></div>
-              <div class="book__back" aria-hidden="true"></div>
-            </div>
+            </article>
+            <article class="panel panel--sage">
+              <div class="panel__art" aria-hidden="true"><i class="ph-thin ph-flower-lotus"></i></div>
+              <div class="panel__body">
+                <p class="panel__topic">Tu cuerpo</p>
+                <h3 class="panel__quote">“Este ya no parece mi cuerpo de antes.”</h3>
+                <p class="panel__text">Entiendes por qué tu cuerpo responde diferente y cómo alimentarte y moverte sin dietas extremas ni rutinas imposibles.</p>
+                <p class="panel__tool"><i class="ph ph-wrench" aria-hidden="true"></i>Mapa de alimentación y plan de movimiento</p>
+              </div>
+            </article>
+            <article class="panel panel--plum">
+              <div class="panel__art" aria-hidden="true"><i class="ph-thin ph-cloud-fog"></i></div>
+              <div class="panel__body">
+                <p class="panel__topic">Emociones y mente</p>
+                <h3 class="panel__quote">“No me reconozco.”</h3>
+                <p class="panel__text">Comprendes la irritabilidad, la sobrecarga y la niebla mental, con herramientas para empezar y señales para saber cuándo buscar apoyo.</p>
+                <p class="panel__tool"><i class="ph ph-wrench" aria-hidden="true"></i>Plan de equilibrio emocional</p>
+              </div>
+            </article>
+            <article class="panel panel--petrol">
+              <div class="panel__art" aria-hidden="true"><i class="ph-thin ph-compass"></i></div>
+              <div class="panel__body">
+                <p class="panel__topic">Por dónde empezar</p>
+                <h3 class="panel__quote">“Leo tantos consejos que ya no sé qué hacer.”</h3>
+                <p class="panel__text">Información ordenada por temas, basada en fuentes de salud confiables, y un plan para elegir una o dos prioridades y empezar.</p>
+                <p class="panel__tool"><i class="ph ph-wrench" aria-hidden="true"></i>Mi plan personal de bienestar</p>
+              </div>
+            </article>
           </div>
-          <div class="stage__shadow" aria-hidden="true"></div>
-          <p class="chip chip--a" aria-hidden="true"><i class="ph-light ph-book-open-text"></i>10 capítulos + 8 herramientas</p>
-          <p class="chip chip--b" aria-hidden="true"><i class="ph-light ph-gift"></i>3 bonos incluidos</p>
         </div>
       </div>
     </section>
 
-    <!-- ============ MARQUESINA DE TEMAS ============ -->
-    <div class="marquee" aria-label="Temas de la guía: sueño, energía, alimentación, movimiento, emociones, autoestima, intimidad, consulta médica y tu plan de bienestar">
-      <div class="marquee__track" aria-hidden="true">
-        <span>Sueño</span><i class="ph-light ph-sparkle"></i><span>Energía</span><i class="ph-light ph-sparkle"></i><span>Alimentación</span><i class="ph-light ph-sparkle"></i><span>Movimiento</span><i class="ph-light ph-sparkle"></i><span>Emociones</span><i class="ph-light ph-sparkle"></i><span>Autoestima</span><i class="ph-light ph-sparkle"></i><span>Intimidad</span><i class="ph-light ph-sparkle"></i><span>Tu consulta médica</span><i class="ph-light ph-sparkle"></i><span>Tu plan de bienestar</span><i class="ph-light ph-sparkle"></i>
-        <span>Sueño</span><i class="ph-light ph-sparkle"></i><span>Energía</span><i class="ph-light ph-sparkle"></i><span>Alimentación</span><i class="ph-light ph-sparkle"></i><span>Movimiento</span><i class="ph-light ph-sparkle"></i><span>Emociones</span><i class="ph-light ph-sparkle"></i><span>Autoestima</span><i class="ph-light ph-sparkle"></i><span>Intimidad</span><i class="ph-light ph-sparkle"></i><span>Tu consulta médica</span><i class="ph-light ph-sparkle"></i><span>Tu plan de bienestar</span><i class="ph-light ph-sparkle"></i>
-      </div>
-    </div>
-
-    <!-- ============ DOLORES: tarjetas que se voltean ============ -->
-    <section class="pains section" aria-labelledby="pains-title">
+    <!-- ===================== ÍNDICE EDITORIAL (día) ===================== -->
+    <section class="index section" id="capitulos" data-theme="day" aria-labelledby="idx-title">
       <div class="wrap">
-        <h2 id="pains-title" class="h2 center reveal">¿Alguna de estas frases <em>suena a ti?</em></h2>
-        <p class="lead center reveal"><i class="ph-light ph-hand-tap" aria-hidden="true"></i> Toca cada tarjeta para ver cómo te acompaña la guía.</p>
-
-        <div class="flips">
-          <button class="flip reveal" type="button" aria-pressed="false">
-            <span class="flip__inner">
-              <span class="flip__face flip__face--front flip__face--rose">
-                <span class="flip__topic"><i class="ph-light ph-moon-stars" aria-hidden="true"></i>Sueño y energía</span>
-                <span class="flip__quote">“Duermo, pero no descanso.”</span>
-                <span class="flip__hint">Ver más <i class="ph ph-arrows-clockwise" aria-hidden="true"></i></span>
-              </span>
-              <span class="flip__face flip__face--back">
-                <span class="flip__answer">Aprendes a distinguir cansancio de falta de recuperación, identificas tu patrón y construyes una transición más amable hacia el descanso.</span>
-                <span class="flip__tool"><i class="ph-light ph-wrench" aria-hidden="true"></i>Plan de recuperación de energía de 7 días</span>
-              </span>
-            </span>
-          </button>
-
-          <button class="flip reveal" type="button" aria-pressed="false">
-            <span class="flip__inner">
-              <span class="flip__face flip__face--front flip__face--sage">
-                <span class="flip__topic"><i class="ph-light ph-person-simple" aria-hidden="true"></i>Cuerpo</span>
-                <span class="flip__quote">“Este ya no parece mi cuerpo de antes.”</span>
-                <span class="flip__hint">Ver más <i class="ph ph-arrows-clockwise" aria-hidden="true"></i></span>
-              </span>
-              <span class="flip__face flip__face--back">
-                <span class="flip__answer">Entiendes por qué tu cuerpo responde diferente y cómo alimentarte y moverte sin dietas extremas ni rutinas imposibles.</span>
-                <span class="flip__tool"><i class="ph-light ph-wrench" aria-hidden="true"></i>Mapa de alimentación y plan de movimiento</span>
-              </span>
-            </span>
-          </button>
-
-          <button class="flip reveal" type="button" aria-pressed="false">
-            <span class="flip__inner">
-              <span class="flip__face flip__face--front flip__face--plum">
-                <span class="flip__topic"><i class="ph-light ph-cloud-fog" aria-hidden="true"></i>Emociones y mente</span>
-                <span class="flip__quote">“No me reconozco.”</span>
-                <span class="flip__hint">Ver más <i class="ph ph-arrows-clockwise" aria-hidden="true"></i></span>
-              </span>
-              <span class="flip__face flip__face--back">
-                <span class="flip__answer">Comprendes la irritabilidad, la sobrecarga y la niebla mental, con herramientas para empezar y señales para saber cuándo buscar apoyo.</span>
-                <span class="flip__tool"><i class="ph-light ph-wrench" aria-hidden="true"></i>Plan de equilibrio emocional</span>
-              </span>
-            </span>
-          </button>
-
-          <button class="flip reveal" type="button" aria-pressed="false">
-            <span class="flip__inner">
-              <span class="flip__face flip__face--front flip__face--petrol">
-                <span class="flip__topic"><i class="ph-light ph-signpost" aria-hidden="true"></i>Confusión</span>
-                <span class="flip__quote">“Leo tantos consejos que ya no sé qué hacer.”</span>
-                <span class="flip__hint">Ver más <i class="ph ph-arrows-clockwise" aria-hidden="true"></i></span>
-              </span>
-              <span class="flip__face flip__face--back">
-                <span class="flip__answer">Información ordenada por temas, basada en fuentes de salud confiables, y un plan para elegir una o dos prioridades y empezar.</span>
-                <span class="flip__tool"><i class="ph-light ph-wrench" aria-hidden="true"></i>Mi plan personal de bienestar</span>
-              </span>
-            </span>
-          </button>
+        <div class="index__head">
+          <h2 id="idx-title" class="h2 reveal">Diez capítulos, de entender <em>a actuar.</em></h2>
+          <p class="lead reveal">Lenguaje claro, un resumen de lo esencial al final de cada capítulo y 8 herramientas prácticas para observar, anotar y decidir.</p>
         </div>
+        <ol class="chapters js-chapters" role="list">
+          <li class="ch reveal"><button class="ch__row" type="button" aria-expanded="false"><span class="ch__n">01</span><span class="ch__t">La etapa de la que casi nadie nos habló</span><span class="ch__plus" aria-hidden="true"></span></button><div class="ch__more"><div><p>Perimenopausia, menopausia y posmenopausia. Y por qué no todo lo que ocurre después de los 40 es menopausia.</p><p class="ch__tool"><i class="ph ph-map-pin" aria-hidden="true"></i>Tu primer paso: ubícate</p></div></div></li>
+          <li class="ch reveal"><button class="ch__row" type="button" aria-expanded="false"><span class="ch__n">02</span><span class="ch__t">Cuando tu cuerpo cambia</span><span class="ch__plus" aria-hidden="true"></span></button><div class="ch__more"><div><p>Las cuatro señales: energía, sueño, cambios corporales y emociones. Qué observar en cada una.</p><p class="ch__tool"><i class="ph ph-wrench" aria-hidden="true"></i>Mapa personal de cambios</p></div></div></li>
+          <li class="ch reveal"><button class="ch__row" type="button" aria-expanded="false"><span class="ch__n">03</span><span class="ch__t">Energía y sueño</span><span class="ch__plus" aria-hidden="true"></span></button><div class="ch__more"><div><p>“Estoy cansada de estar cansada.” Cansancio o falta de recuperación, tu patrón y tu transición hacia el descanso.</p><p class="ch__tool"><i class="ph ph-wrench" aria-hidden="true"></i>Plan de recuperación de energía, 7 días</p></div></div></li>
+          <li class="ch reveal"><button class="ch__row" type="button" aria-expanded="false"><span class="ch__n">04</span><span class="ch__t">Alimentación en esta nueva etapa</span><span class="ch__plus" aria-hidden="true"></span></button><div class="ch__more"><div><p>Comer mejor no significa comer cada vez menos. Cuatro pilares y platos sencillos, sin soluciones extremas.</p><p class="ch__tool"><i class="ph ph-wrench" aria-hidden="true"></i>Mapa de alimentación consciente, 7 días</p></div></div></li>
+          <li class="ch reveal"><button class="ch__row" type="button" aria-expanded="false"><span class="ch__n">05</span><span class="ch__t">Movimiento después de los 40</span><span class="ch__plus" aria-hidden="true"></span></button><div class="ch__more"><div><p>Fuerza sin convertirte en atleta. “Nunca he entrenado, ¿ya es demasiado tarde?”</p><p class="ch__tool"><i class="ph ph-wrench" aria-hidden="true"></i>Plan de movimiento sostenible, 30 días</p></div></div></li>
+          <li class="ch reveal"><button class="ch__row" type="button" aria-expanded="false"><span class="ch__n">06</span><span class="ch__t">Emociones, estrés y mente</span><span class="ch__plus" aria-hidden="true"></span></button><div class="ch__more"><div><p>Cuando la paciencia se acorta, la mente no se apaga o entras a una habitación y olvidas para qué.</p><p class="ch__tool"><i class="ph ph-wrench" aria-hidden="true"></i>Plan de equilibrio emocional</p></div></div></li>
+          <li class="ch reveal"><button class="ch__row" type="button" aria-expanded="false"><span class="ch__n">07</span><span class="ch__t">Feminidad, autoestima e intimidad</span><span class="ch__plus" aria-hidden="true"></span></button><div class="ch__more"><div><p>Tu feminidad no termina con la fertilidad. Deseo, molestias y cómo hablarlo con tu pareja sin conflicto.</p><p class="ch__tool"><i class="ph ph-wrench" aria-hidden="true"></i>Reconexión contigo</p></div></div></li>
+          <li class="ch reveal"><button class="ch__row" type="button" aria-expanded="false"><span class="ch__n">08</span><span class="ch__t">Tu salud en tus manos</span><span class="ch__plus" aria-hidden="true"></span></button><div class="ch__more"><div><p>Ordena tu historia, lleva tus preguntas a la consulta y conoce las señales que no deberías ignorar.</p><p class="ch__tool"><i class="ph ph-wrench" aria-hidden="true"></i>Mi preparación para la consulta</p></div></div></li>
+          <li class="ch reveal"><button class="ch__row" type="button" aria-expanded="false"><span class="ch__n">09</span><span class="ch__t">Tu propio plan de bienestar</span><span class="ch__plus" aria-hidden="true"></span></button><div class="ch__more"><div><p>Semáforo de bienestar, una o dos prioridades y una acción mínima. Progreso más allá de la báscula.</p><p class="ch__tool"><i class="ph ph-wrench" aria-hidden="true"></i>Mi plan personal de bienestar</p></div></div></li>
+          <li class="ch reveal"><button class="ch__row" type="button" aria-expanded="false"><span class="ch__n">10</span><span class="ch__t">Una nueva versión de ti</span><span class="ch__plus" aria-hidden="true"></span></button><div class="ch__more"><div><p>Vivir esta etapa con más confianza. Aceptar no significa resignarte.</p><p class="ch__tool"><i class="ph ph-pen-nib" aria-hidden="true"></i>Una carta para esta nueva etapa</p></div></div></li>
+        </ol>
       </div>
     </section>
 
-    <!-- ============ REENCUADRE: texto que se enciende ============ -->
-    <section class="reframe section" aria-labelledby="reframe-title">
-      <div class="wrap">
-        <h2 id="reframe-title" class="sr-only">La idea central</h2>
-        <p class="reframe__text js-scrub">Esta guía no busca que vuelvas a ser la mujer que eras antes. Busca ayudarte a comprender y cuidar mejor a la mujer que eres hoy.</p>
-
-        <div class="shift reveal">
-          <div class="shift__row shift__row--from">
-            <span class="shift__label">Antes</span>
-            <p>“No sé qué me está pasando.”</p>
-          </div>
-          <div class="shift__arrow" aria-hidden="true"><i class="ph-light ph-arrow-down"></i></div>
-          <div class="shift__row shift__row--to">
-            <span class="shift__label">Después de leerla</span>
-            <p>“Entiendo mejor mi cuerpo y sé cuál puede ser <em>mi siguiente paso.</em>”</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ CAPÍTULOS: carrusel horizontal (fijo en escritorio) ============ -->
-    <section class="chapters" id="capitulos" aria-labelledby="cap-title">
-      <div class="chapters__pin">
-        <div class="wrap chapters__head">
-          <h2 id="cap-title" class="h2 reveal">Diez capítulos, de entender <em>a actuar.</em></h2>
-          <p class="lead reveal">Cada capítulo cierra con “lo más importante que quiero que recuerdes” y casi todos incluyen una herramienta práctica.</p>
-        </div>
-        <div class="chapters__viewport">
-          <ol class="chapters__track js-track" role="list">
-            <li class="cap cap--rose"><span class="cap__n">01</span><h3>La etapa de la que casi nadie nos habló</h3><p>Perimenopausia, menopausia y posmenopausia. Y por qué no todo lo que ocurre después de los 40 es menopausia.</p><span class="cap__tool"><i class="ph-light ph-map-pin" aria-hidden="true"></i>Tu primer paso: ubícate</span></li>
-            <li class="cap"><span class="cap__n">02</span><h3>Cuando tu cuerpo cambia</h3><p>Las cuatro señales: energía, sueño, cambios corporales y emociones. Qué observar en cada una.</p><span class="cap__tool"><i class="ph-light ph-wrench" aria-hidden="true"></i>Mapa personal de cambios</span></li>
-            <li class="cap cap--sage"><span class="cap__n">03</span><h3>Energía y sueño</h3><p>“Estoy cansada de estar cansada.” Cansancio o falta de recuperación, tu patrón y tu transición al descanso.</p><span class="cap__tool"><i class="ph-light ph-wrench" aria-hidden="true"></i>Plan de recuperación de energía, 7 días</span></li>
-            <li class="cap"><span class="cap__n">04</span><h3>Alimentación en esta nueva etapa</h3><p>Comer mejor no significa comer cada vez menos. Cuatro pilares y platos sencillos, sin soluciones extremas.</p><span class="cap__tool"><i class="ph-light ph-wrench" aria-hidden="true"></i>Mapa de alimentación consciente, 7 días</span></li>
-            <li class="cap cap--plum"><span class="cap__n">05</span><h3>Movimiento después de los 40</h3><p>Fuerza sin convertirte en atleta. “Nunca he entrenado, ¿ya es demasiado tarde?”</p><span class="cap__tool"><i class="ph-light ph-wrench" aria-hidden="true"></i>Plan de movimiento sostenible, 30 días</span></li>
-            <li class="cap"><span class="cap__n">06</span><h3>Emociones, estrés y mente</h3><p>Cuando la paciencia se acorta, la mente no se apaga o entras a una habitación y olvidas para qué.</p><span class="cap__tool"><i class="ph-light ph-wrench" aria-hidden="true"></i>Plan de equilibrio emocional</span></li>
-            <li class="cap cap--rose"><span class="cap__n">07</span><h3>Feminidad, autoestima e intimidad</h3><p>Tu feminidad no termina con la fertilidad. Deseo, molestias y cómo hablarlo con tu pareja sin conflicto.</p><span class="cap__tool"><i class="ph-light ph-wrench" aria-hidden="true"></i>Reconexión contigo</span></li>
-            <li class="cap"><span class="cap__n">08</span><h3>Tu salud en tus manos</h3><p>Ordena tu historia, lleva tus preguntas a la consulta y conoce las señales que no deberías ignorar.</p><span class="cap__tool"><i class="ph-light ph-wrench" aria-hidden="true"></i>Mi preparación para la consulta</span></li>
-            <li class="cap cap--sage"><span class="cap__n">09</span><h3>Tu propio plan de bienestar</h3><p>Semáforo de bienestar, una o dos prioridades y una acción mínima. Progreso más allá de la báscula.</p><span class="cap__tool"><i class="ph-light ph-wrench" aria-hidden="true"></i>Mi plan personal de bienestar</span></li>
-            <li class="cap cap--petrol"><span class="cap__n">10</span><h3>Una nueva versión de ti</h3><p>Vivir esta etapa con más confianza. Aceptar no significa resignarte.</p><span class="cap__tool"><i class="ph-light ph-pen-nib" aria-hidden="true"></i>Una carta para esta nueva etapa</span></li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ POR DENTRO: páginas reales ============ -->
-    <section class="inside section" id="por-dentro" aria-labelledby="inside-title">
-      <div class="wrap inside__grid">
-        <div class="inside__copy">
-          <h2 id="inside-title" class="h2 reveal">Así se ve <em>por dentro.</em></h2>
-          <p class="lead reveal">Lectura clara, frases que se quedan contigo y herramientas para completar. Puedes leerla en el celular o imprimir las fichas.</p>
-          <ul class="ticks reveal" role="list">
-            <li><i class="ph ph-check" aria-hidden="true"></i>Lenguaje sencillo, sin tecnicismos innecesarios</li>
-            <li><i class="ph ph-check" aria-hidden="true"></i>Resumen de lo esencial al final de cada capítulo</li>
-            <li><i class="ph ph-check" aria-hidden="true"></i>Fichas prácticas para observar y anotar</li>
-          </ul>
-          <p class="inside__hint reveal"><i class="ph-light ph-magnifying-glass-plus" aria-hidden="true"></i>Toca una página para verla en grande.</p>
-        </div>
-
-        <div class="deck js-deck">
-          <button class="page" type="button" data-src="assets/pages/ebook-intro.jpg" aria-label="Ver página: introducción"><img src="assets/pages/ebook-intro.jpg" alt="Página de introducción: La etapa que nadie nos enseñó a vivir" loading="lazy" width="744" height="1052" /></button>
-          <button class="page" type="button" data-src="assets/pages/ebook-mapa-cambios.jpg" aria-label="Ver página: mapa personal de cambios"><img src="assets/pages/ebook-mapa-cambios.jpg" alt="Herramienta práctica: Mapa personal de cambios" loading="lazy" width="744" height="1052" /></button>
-          <button class="page" type="button" data-src="assets/pages/ebook-energia-sueno.jpg" aria-label="Ver página: energía y sueño"><img src="assets/pages/ebook-energia-sueno.jpg" alt="Inicio del capítulo Energía y sueño" loading="lazy" width="744" height="1052" /></button>
-          <button class="page" type="button" data-src="assets/pages/ebook-indice.jpg" aria-label="Ver página: índice"><img src="assets/pages/ebook-indice.jpg" alt="Índice detallado de la guía" loading="lazy" width="744" height="1052" /></button>
-          <button class="page" type="button" data-src="assets/pages/ebook-emociones.jpg" aria-label="Ver página: emociones"><img src="assets/pages/ebook-emociones.jpg" alt="Inicio del capítulo Emociones, estrés y mente" loading="lazy" width="744" height="1052" /></button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ LAS 4 PREGUNTAS: tarjetas que se apilan ============ -->
-    <section class="questions section" aria-labelledby="q-title">
+    <!-- ===================== 4 PREGUNTAS apiladas (día) ===================== -->
+    <section class="questions section" data-theme="day" aria-labelledby="q-title">
       <div class="wrap questions__grid">
         <div class="questions__head">
           <h2 id="q-title" class="h2 reveal">Cuatro preguntas que <em>te llevarás para siempre.</em></h2>
           <p class="lead reveal">No necesitas recordar cada página. Cuando algo cambie, vuelve a estas preguntas.</p>
         </div>
-        <ol class="stack-cards" role="list">
+        <ol class="qstack" role="list">
           <li class="qcard qcard--1"><span class="qcard__n">1</span><h3>¿Qué estoy sintiendo?</h3><p>Ponle nombre.</p></li>
           <li class="qcard qcard--2"><span class="qcard__n">2</span><h3>¿Existe algún patrón?</h3><p>Observa antes de sacar conclusiones.</p></li>
           <li class="qcard qcard--3"><span class="qcard__n">3</span><h3>¿Qué puedo hacer ahora?</h3><p>Elige una acción concreta.</p></li>
@@ -254,83 +205,79 @@
       </div>
     </section>
 
-    <!-- ============ BONOS: línea de tiempo ============ -->
-    <section class="bonus section" id="bonos" aria-labelledby="bonus-title">
+    <!-- ===================== BONOS: se desbloquean (día) ===================== -->
+    <section class="bonus section" id="bonos" data-theme="day" aria-labelledby="bonus-title">
       <div class="wrap">
         <div class="bonus__head">
-          <p class="tag reveal">Incluidos con tu compra</p>
-          <h2 id="bonus-title" class="h2 reveal">Tres bonos que llegan <em>paso a paso.</em></h2>
-          <p class="lead reveal">Se liberan de forma progresiva para que no recibas todo de golpe y puedas leer, aplicar y avanzar a tu ritmo.</p>
+          <h2 id="bonus-title" class="h2 reveal">Tres bonos que se desbloquean <em>paso a paso.</em></h2>
+          <p class="lead reveal">Llegan de forma progresiva para que no recibas todo de golpe y puedas leer, aplicar y avanzar a tu ritmo.</p>
         </div>
-
-        <ol class="timeline js-timeline" role="list">
-          <li class="tl">
-            <span class="tl__day"><small>Día</small>0</span>
-            <div class="tl__card">
-              <img src="assets/covers/ebook.jpg" alt="Portada de Menopausia sin miedo" loading="lazy" width="800" height="1280" />
-              <div>
-                <h3>Menopausia sin miedo</h3>
-                <p>La guía completa: 10 capítulos y 8 herramientas prácticas. Acceso inmediato.</p>
-              </div>
+        <ol class="unlock js-unlock" role="list">
+          <li class="ul">
+            <div class="ul__node"><i class="ph ph-lock-simple-open" aria-hidden="true"></i></div>
+            <div class="ul__card ul__card--rose">
+              <p class="ul__day">Día 0 · Al comprar</p>
+              <h3>Menopausia sin miedo</h3>
+              <p>La guía completa: 10 capítulos y 8 herramientas prácticas.</p>
             </div>
           </li>
-          <li class="tl">
-            <span class="tl__day"><small>Día</small>3</span>
-            <div class="tl__card">
-              <img src="assets/covers/bono-14-dias.jpg" alt="Portada del bono Tus primeros 14 días" loading="lazy" width="800" height="1280" />
-              <div>
-                <span class="tl__badge">Bono 1</span>
-                <h3>Tus primeros 14 días</h3>
-                <p>Un plan sencillo para empezar a aplicar pequeños cambios sin intentar hacerlo todo de golpe.</p>
-              </div>
+          <li class="ul">
+            <div class="ul__node"><i class="ph ph-lock-simple ul__lock" aria-hidden="true"></i><i class="ph ph-lock-simple-open ul__open" aria-hidden="true"></i></div>
+            <div class="ul__card ul__card--sage">
+              <p class="ul__day">Día 3 · Bono 1</p>
+              <h3>Tus primeros 14 días</h3>
+              <p>Un plan sencillo para empezar a aplicar pequeños cambios sin intentar hacerlo todo de golpe.</p>
             </div>
           </li>
-          <li class="tl">
-            <span class="tl__day"><small>Día</small>6</span>
-            <div class="tl__card">
-              <img src="assets/covers/bono-7-noches.jpg" alt="Portada del bono 7 noches para cuidar tu descanso" loading="lazy" width="800" height="1280" />
-              <div>
-                <span class="tl__badge">Bono 2</span>
-                <h3>7 noches para cuidar tu descanso</h3>
-                <p>Observa qué puede estar interfiriendo con tu sueño y construye una rutina nocturna más amable.</p>
-              </div>
+          <li class="ul">
+            <div class="ul__node"><i class="ph ph-lock-simple ul__lock" aria-hidden="true"></i><i class="ph ph-lock-simple-open ul__open" aria-hidden="true"></i></div>
+            <div class="ul__card ul__card--night">
+              <p class="ul__day">Día 6 · Bono 2</p>
+              <h3>7 noches para cuidar tu descanso</h3>
+              <p>Observa qué puede estar interfiriendo con tu sueño y construye una rutina nocturna más amable.</p>
             </div>
           </li>
-          <li class="tl">
-            <span class="tl__day"><small>Día</small>8</span>
-            <div class="tl__card">
-              <img src="assets/covers/bono-consulta.jpg" alt="Portada del bono Mi consulta sobre menopausia" loading="lazy" width="800" height="1280" />
-              <div>
-                <span class="tl__badge">Bono 3</span>
-                <h3>Mi consulta sobre menopausia</h3>
-                <p>Organiza síntomas, dudas, prioridades y preguntas antes de tu consulta profesional.</p>
-              </div>
+          <li class="ul">
+            <div class="ul__node"><i class="ph ph-lock-simple ul__lock" aria-hidden="true"></i><i class="ph ph-lock-simple-open ul__open" aria-hidden="true"></i></div>
+            <div class="ul__card ul__card--gold">
+              <p class="ul__day">Día 8 · Bono 3</p>
+              <h3>Mi consulta sobre menopausia</h3>
+              <p>Organiza síntomas, dudas, prioridades y preguntas antes de tu consulta profesional.</p>
             </div>
           </li>
         </ol>
       </div>
     </section>
 
-    <!-- ============ OFERTA (bloque de color deliberado) ============ -->
-    <section class="offer" id="precio" aria-labelledby="offer-title">
-      <div class="offer__glow" aria-hidden="true"></div>
+    <!-- ===================== TESTIMONIOS (se muestra solo si hay testimonios reales en CONFIG) ===================== -->
+    <section class="voices section" data-theme="day" aria-labelledby="voices-title" hidden>
+      <div class="wrap">
+        <h2 id="voices-title" class="h2 center reveal">Lo que dicen <em>las lectoras.</em></h2>
+        <div class="voices__track js-voices"></div>
+      </div>
+    </section>
+
+    <!-- ===================== OFERTA (noche) ===================== -->
+    <section class="offer section" id="precio" data-theme="night" aria-labelledby="offer-title">
       <div class="wrap offer__grid">
         <div class="offer__copy">
           <h2 id="offer-title" class="h2 reveal">Todo lo que recibes <em>hoy.</em></h2>
           <ul class="included" role="list">
-            <li class="reveal"><img src="assets/covers/ebook.jpg" alt="" width="800" height="1280" loading="lazy" /><div><strong>Menopausia sin miedo</strong><span>Ebook en PDF: 10 capítulos + 8 herramientas</span></div></li>
-            <li class="reveal"><img src="assets/covers/bono-14-dias.jpg" alt="" width="800" height="1280" loading="lazy" /><div><strong>Bono 1: Tus primeros 14 días</strong><span>Se desbloquea el día 3</span></div></li>
-            <li class="reveal"><img src="assets/covers/bono-7-noches.jpg" alt="" width="800" height="1280" loading="lazy" /><div><strong>Bono 2: 7 noches para cuidar tu descanso</strong><span>Se desbloquea el día 6</span></div></li>
-            <li class="reveal"><img src="assets/covers/bono-consulta.jpg" alt="" width="800" height="1280" loading="lazy" /><div><strong>Bono 3: Mi consulta sobre menopausia</strong><span>Se desbloquea el día 8</span></div></li>
+            <li class="reveal"><i class="ph-light ph-book-open-text" aria-hidden="true"></i><div><strong>Menopausia sin miedo</strong><span>Ebook en PDF: 10 capítulos + 8 herramientas</span></div></li>
+            <li class="reveal"><i class="ph-light ph-calendar-check" aria-hidden="true"></i><div><strong>Bono 1: Tus primeros 14 días</strong><span>Se desbloquea el día 3</span></div></li>
+            <li class="reveal"><i class="ph-light ph-moon-stars" aria-hidden="true"></i><div><strong>Bono 2: 7 noches para cuidar tu descanso</strong><span>Se desbloquea el día 6</span></div></li>
+            <li class="reveal"><i class="ph-light ph-clipboard-text" aria-hidden="true"></i><div><strong>Bono 3: Mi consulta sobre menopausia</strong><span>Se desbloquea el día 8</span></div></li>
           </ul>
         </div>
 
         <div class="price reveal">
+          <div class="price__box">
+          <div class="price__glow" aria-hidden="true"></div>
           <div class="price__core">
             <p class="price__label">Guía + 3 bonos</p>
             <p class="price__now js-price">US$17.97</p>
             <p class="price__alt">Pago único. Sin suscripciones.</p>
-            <a class="btn btn--primary btn--lg btn--block btn--shine js-checkout" href="#precio">
+            <a class="btn btn--primary btn--lg btn--block btn--shine magnetic js-checkout" href="#precio">
               <span>Quiero mi guía</span>
               <span class="btn__icon" aria-hidden="true"><i class="ph ph-arrow-right"></i></span>
             </a>
@@ -341,21 +288,21 @@
               <li><i class="ph-light ph-device-mobile" aria-hidden="true"></i>Léela en el celular o imprímela</li>
             </ul>
           </div>
-
+          </div>
           <div class="bump">
-            <img src="assets/covers/planificador.jpg" alt="Portada del Planificador de bienestar de 30 días" width="800" height="1280" loading="lazy" />
+            <i class="ph-light ph-notebook" aria-hidden="true"></i>
             <div>
               <p class="bump__label">Opcional en el checkout</p>
               <p class="bump__title">Plan Menopausia +40: 30 días para volver a cuidarte</p>
-              <p class="bump__text">Planificador para convertir lo aprendido en acciones: 4 semanas, sueño, energía, movimiento y balance final. Lo puedes añadir al pagar por <strong class="js-bump-price">US$9.97</strong>.</p>
+              <p class="bump__text">Planificador de 4 semanas para convertir lo aprendido en acciones: sueño, energía, movimiento y balance final. Lo puedes añadir al pagar por <strong class="js-bump-price">US$9.97</strong>.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ GARANTÍA ============ -->
-    <section class="guarantee section js-guarantee-section" aria-labelledby="g-title">
+    <!-- ===================== GARANTÍA (noche) ===================== -->
+    <section class="guarantee section js-guarantee-section" data-theme="night" aria-labelledby="g-title">
       <div class="wrap guarantee__inner">
         <div class="seal reveal" aria-hidden="true">
           <svg viewBox="0 0 200 200" class="seal__ring">
@@ -371,8 +318,8 @@
       </div>
     </section>
 
-    <!-- ============ PARA QUIÉN ES ============ -->
-    <section class="fit section" aria-labelledby="fit-title">
+    <!-- ===================== PARA QUIÉN ES (día) ===================== -->
+    <section class="fit section" data-theme="day" aria-labelledby="fit-title">
       <div class="wrap">
         <h2 id="fit-title" class="h2 center reveal">¿Es para ti?</h2>
         <div class="fit__grid">
@@ -397,8 +344,8 @@
       </div>
     </section>
 
-    <!-- ============ QUIÉN ESTÁ DETRÁS ============ -->
-    <section class="maker section" aria-labelledby="maker-title">
+    <!-- ===================== NEXO EDITORIAL (día) ===================== -->
+    <section class="maker section" data-theme="day" aria-labelledby="maker-title">
       <div class="wrap maker__grid">
         <div class="maker__brand reveal" aria-hidden="true">
           <span class="maker__mark">N</span>
@@ -421,8 +368,8 @@
       </div>
     </section>
 
-    <!-- ============ FAQ ============ -->
-    <section class="faq section" id="preguntas" aria-labelledby="faq-title">
+    <!-- ===================== FAQ (día) ===================== -->
+    <section class="faq section" id="preguntas" data-theme="day" aria-labelledby="faq-title">
       <div class="wrap faq__inner">
         <h2 id="faq-title" class="h2 center reveal">Preguntas frecuentes</h2>
         <div class="accordion">
@@ -448,26 +395,24 @@
       </div>
     </section>
 
-    <!-- ============ CIERRE ============ -->
-    <section class="final" aria-labelledby="final-title">
-      <div class="wash wash--final" aria-hidden="true">
-        <span class="wash__orb wash__orb--rose"></span>
-        <span class="wash__orb wash__orb--sage"></span>
-      </div>
+    <!-- ===================== CIERRE (noche) ===================== -->
+    <section class="final" data-theme="night" aria-labelledby="final-title">
       <div class="wrap final__inner">
-        <h2 id="final-title" class="sr-only">Empieza hoy</h2>
-        <p class="final__text js-scrub">Tu cuerpo seguirá cambiando. Tú también. Y eso no significa que estés perdiendo tu historia. Significa que todavía la estás escribiendo.</p>
-        <img class="final__cover reveal" src="assets/covers/ebook.jpg" alt="Portada de Menopausia sin miedo" width="800" height="1280" loading="lazy" />
-        <a class="btn btn--primary btn--xl btn--shine reveal js-checkout" href="#precio">
+        <p class="final__pre reveal">Tu cuerpo seguirá cambiando. Tú también.</p>
+        <h2 id="final-title" class="final__title">
+          <span class="line"><span>Tu historia</span></span>
+          <span class="line"><span><em>todavía la estás escribiendo.</em></span></span>
+        </h2>
+        <a class="btn btn--primary btn--xl btn--shine magnetic reveal js-checkout" href="#precio">
           <span>Quiero mi guía</span>
           <span class="btn__icon" aria-hidden="true"><i class="ph ph-arrow-right"></i></span>
         </a>
-        <p class="final__micro reveal"><span class="js-price">US$17.97</span> · Ebook + 3 bonos · Acceso inmediato</p>
+        <p class="final__micro reveal"><b class="js-price">US$17.97</b> · Ebook + 3 bonos · Acceso inmediato</p>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
+  <footer class="footer" data-theme="night">
     <div class="wrap">
       <div class="footer__brand"><span class="brand__mark" aria-hidden="true">N</span><span>Nexo Editorial</span></div>
       <p class="disclaimer">Aviso: Menopausia sin miedo es una guía educativa. No sustituye el diagnóstico, el tratamiento ni el consejo de un profesional de la salud. Las recomendaciones sobre diagnóstico, tratamiento, terapia hormonal, ejercicio o nutrición deben adaptarse a tu historia clínica junto con profesionales cualificados. Los resultados varían de una persona a otra.</p>
@@ -481,19 +426,12 @@
     </div>
   </footer>
 
-  <!-- Barra fija móvil -->
   <div class="sticky-cta" aria-hidden="true">
-    <img src="assets/covers/ebook.jpg" alt="" width="800" height="1280" />
     <div><strong class="js-price">US$17.97</strong><span>Ebook + 3 bonos</span></div>
     <a class="btn btn--primary btn--sm js-checkout" href="#precio" tabindex="-1"><span>Quiero mi guía</span></a>
   </div>
 
-  <!-- Visor de páginas -->
-  <dialog class="viewer js-viewer" aria-label="Vista ampliada de la página">
-    <button class="viewer__close js-viewer-close" type="button" aria-label="Cerrar"><i class="ph ph-x" aria-hidden="true"></i></button>
-    <img class="js-viewer-img" src="" alt="" />
-  </dialog>
-
   <script src="main.js" defer></script>
+  <script type="module" src="bloom.js"></script>
 </body>
 </html>
