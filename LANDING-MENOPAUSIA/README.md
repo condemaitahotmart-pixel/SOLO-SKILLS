@@ -3,6 +3,8 @@
 Página de venta del ebook **Menopausia sin miedo** + 3 bonos, para Hotmart.
 HTML + CSS + JS puro, sin build: sube la carpeta tal cual a cualquier hosting (Netlify, Vercel, Hostinger, GitHub Pages).
 
+> Debe servirse desde un hosting (o `python3 -m http.server`), no abriendo el archivo con doble clic: la escena 3D usa módulos de JavaScript.
+
 ## Antes de publicar (en `main.js`, objeto `CONFIG`)
 
 | Campo | Qué poner |
@@ -24,13 +26,14 @@ En `index.html`, pie de página: enlaza **Términos** y **Privacidad** y cambia 
 
 ## Qué tiene
 
-- Paleta clara de marca (crema, rubor, salvia, arena) con petróleo y ciruela para texto y botones; el fondo cambia de tono suavemente según la sección.
-- Ilustración de la mujer en el arco (SVG propio) que se arma al cargar: arco, sol, mujer, hojas, luna y destellos; las capas siguen al mouse.
-- Intro de marca, scroll suave (Lenis), títulos que suben por máscara, botones magnéticos y con brillo.
-- Dolores en tarjetas ilustradas que pasan en horizontal; muro de consejos contradictorios.
-- "Otra forma de mirarlo": una línea enredada se desenreda con el scroll y termina en un brote.
-- 10 capítulos, 4 preguntas apiladas, bonos con candados que se abren, amanecer que sale junto al precio, tres arcos en el cierre.
-- Respeta `prefers-reduced-motion` y funciona aunque no cargue GSAP.
+- **Intro de marca** al entrar (solo la primera vez por sesión).
+- **Flor de loto 3D en tiempo real** (three.js + shaders propios): se abre al entrar, sus pétalos iridiscentes respiran, el centro dorado brilla y hay polen luminoso flotando. Sigue al puntero y cambia de lugar en cada sección (posiciones en `BLOOM_SPOTS`, `main.js`). Sin WebGL se ve un orbe en CSS.
+- **Fondo de aurora animada** en las secciones de noche: seda de luz ciruela, petróleo, rosa y dorado que fluye y reacciona al mouse.
+- **Scroll suave** con inercia (Lenis) en escritorio.
+- **Noche y día**: el fondo pasa de ciruela a crema y vuelve según la sección.
+- Muro de frases que muchas mujeres se dicen (tomadas del ebook, sin atribuir a nadie).
+- Manifiesto con zoom fijo, dolores en paneles horizontales, índice de capítulos desplegable, 4 preguntas apiladas, bonos que se desbloquean, precio con borde de luz animado, botones magnéticos.
+- Respeta `prefers-reduced-motion` (sin animaciones) y funciona aunque no carguen GSAP ni three.js.
 
 ## Lo que respeta (según tu brief)
 
@@ -45,8 +48,9 @@ En `index.html`, pie de página: enlaza **Términos** y **Privacidad** y cambia 
 | Ruta | Qué es |
 |---|---|
 | `index.html` | Estructura y textos |
-| `styles.css` | Diseño y paleta de marca |
+| `styles.css` | Diseño: temas noche/día y paleta de marca |
 | `main.js` | Configuración, intro, scroll, escenas e interacciones |
+| `bloom.js` | Escena 3D (three.js) |
 | `assets/og.jpg` | Imagen al compartir en WhatsApp o redes (1200x630) |
 
 ## Probar en local
