@@ -17,7 +17,7 @@ const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const root = document.documentElement;
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
-const isDesktop = () => matchMedia("(min-width: 960px)").matches;
+const TONES = { cream: "#f8f2e9", blush: "#f7e6e1", sage: "#e4eadc", sand: "#f1e6d3" };
 
 // ---------- Datos de la oferta ----------
 if (!CONFIG.checkoutUrl.includes("XXXX")) $$(".js-checkout").forEach((a) => (a.href = CONFIG.checkoutUrl));
@@ -27,7 +27,7 @@ $$(".js-year").forEach((el) => (el.textContent = new Date().getFullYear()));
 if (CONFIG.guaranteeDays) {
   $$(".js-guarantee").forEach((el) => (el.textContent = CONFIG.guaranteeDays));
 } else {
-  $$(".js-guarantee-section, .js-guarantee-row, .js-guarantee-faq").forEach((el) => (el.hidden = true));
+  $$(".js-guarantee-text, .js-guarantee-faq").forEach((el) => (el.hidden = true));
 }
 
 // ---------- Testimonios reales ----------
@@ -38,11 +38,6 @@ if (CONFIG.testimonials.length) {
   ).join("");
   $(".voices").hidden = false;
 }
-
-// ---------- Capítulos desplegables ----------
-$$(".ch__row").forEach((b) => b.addEventListener("click", () => {
-  b.setAttribute("aria-expanded", String(b.getAttribute("aria-expanded") !== "true"));
-}));
 
 // ---------- FAQ: una abierta a la vez ----------
 const faqs = $$(".accordion details");
@@ -62,7 +57,7 @@ if ("IntersectionObserver" in window && !reduceMotion) {
       if (!e.isIntersecting) return;
       e.target.classList.add("is-in");
       io.unobserve(e.target);
-      setTimeout(() => e.target.classList.remove("reveal", "is-in"), 1600);
+      setTimeout(() => e.target.classList.remove("reveal", "is-in"), 1500);
     });
   }, { rootMargin: "0px 0px -8% 0px", threshold: 0.1 });
   reveals.forEach((el) => io.observe(el));
@@ -70,10 +65,10 @@ if ("IntersectionObserver" in window && !reduceMotion) {
   reveals.forEach((el) => el.classList.remove("reveal"));
 }
 
-// ---------- Bonos que se desbloquean ----------
+// ---------- Bonos: se abre el candado al llegar ----------
 const unlockObs = new IntersectionObserver((entries) => {
   entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("is-lit"); });
-}, { rootMargin: "0px 0px -40% 0px" });
+}, { rootMargin: "0px 0px -35% 0px" });
 $$(".ul").forEach((u) => unlockObs.observe(u));
 
 // ---------- Barra fija móvil ----------
@@ -89,56 +84,69 @@ const updateSticky = () => {
   new IntersectionObserver(([e]) => { vis[k] = e.isIntersecting; updateSticky(); }).observe($(sel));
 });
 
-// ---------- Posición de la flor 3D por sección (la lee bloom.js) ----------
-// x/y en unidades de pantalla (-1 a 1), s = escala. En móvil se acerca al centro.
-window.__bloom = { x: 0, y: -0.1, s: 1 };
-const BLOOM_SPOTS = {
-  hero: { x: 0.56, y: -0.02, s: 0.86, mx: 0.42, my: 0.74, ms: 0.85 },
-  whispers: { x: 0.72, y: -0.62, s: 0.5, mx: 0.5, my: -0.72, ms: 0.6 },
-  manifesto: { x: 0, y: 0, s: 0.9, mx: 0, my: -0.5, ms: 0.75 },
-  offer: { x: 0.55, y: 0.05, s: 0.85, mx: 0.55, my: 0.92, ms: 0.45 },
-  guarantee: { x: -0.7, y: -0.5, s: 0.45, mx: -0.5, my: -0.75, ms: 0.5 },
-  final: { x: 0, y: 0.8, s: 0.6, mx: 0, my: 0.78, ms: 0.7 },
-};
-const setBloom = (key) => {
-  const spot = BLOOM_SPOTS[key];
-  if (!spot) return;
-  if (isDesktop()) Object.assign(window.__bloom, { x: spot.x, y: spot.y, s: spot.s });
-  else Object.assign(window.__bloom, { x: spot.mx ?? spot.x * 0.45, y: spot.my ?? spot.y, s: spot.ms ?? spot.s * 0.85 });
-};
-
-setBloom("hero");
+// ---------- Ilustración: las capas siguen al puntero (profundidad) ----------
+if (finePointer && !reduceMotion) {
+  const layers = $$(".js-art [data-depth]");
+  layers.forEach((l) => (l.style.transition = "translate 1.2s cubic-bezier(0.16, 1, 0.3, 1)"));
+  $(".hero").addEventListener("pointermove", (e) => {
+    const dx = e.clientX / window.innerWidth - 0.5;
+    const dy = e.clientY / window.innerHeight - 0.5;
+    layers.forEach((l) => {
+      const d = +l.dataset.depth;
+      l.style.translate = `${-dx * d * 0.6}px ${-dy * d * 0.45}px`;
+    });
+  });
+}
 
 // ---------- Intro, scroll suave y escenas con GSAP ----------
 const ready = () => root.classList.add("is-ready");
 
 window.addEventListener("DOMContentLoaded", () => {
   const hasGsap = window.gsap && window.ScrollTrigger;
+  if (!hasGsap || reduceMotion) { ready(); return; }
+
+  gsap.registerPlugin(ScrollTrigger);
+  root.classList.add("has-gsap");
+
+  // 1. La ilustración se arma: arco, sol, mujer, hojas, luna y destellos (presenta a la protagonista)
+  gsap.set(".art__arch", { scaleY: 0, transformOrigin: "50% 100%" });
+  gsap.set(".art__halo", { scale: 0.3, opacity: 0, y: 40, transformOrigin: "50% 50%" });
+  gsap.set(".art__woman", { y: 70, opacity: 0 });
+  gsap.set(".art__leaves", { scaleY: 0, transformOrigin: "50% 100%" });
+  gsap.set(".art__leaves .lf", { opacity: 0 });
+  gsap.set(".art__moon", { scale: 0, rotate: -60, transformOrigin: "50% 50%" });
+  gsap.set(".art__sparks use, .art__orbit", { opacity: 0 });
+  const buildArt = () => gsap.timeline({ defaults: { ease: "expo.out" } })
+    .to(".art__arch", { scaleY: 1, duration: 1.4 })
+    .to(".art__orbit", { opacity: 1, duration: 1.2 }, 0.2)
+    .to(".art__halo", { scale: 1, opacity: 1, y: 0, duration: 1.6 }, 0.35)
+    .to(".art__woman", { y: 0, opacity: 1, duration: 1.4 }, 0.55)
+    .to(".art__leaves", { scaleY: 1, duration: 1.3, stagger: 0.12 }, 0.8)
+    .to(".art__leaves .lf", { opacity: 1, duration: 0.6, stagger: 0.05 }, 1)
+    .to(".art__moon", { scale: 1, rotate: 0, duration: 1.2, ease: "back.out(1.8)" }, 1.1)
+    .to(".art__sparks use", { opacity: 1, duration: 0.5, stagger: 0.1 }, 1.3);
+
+  // 2. Intro de marca (una vez por sesión)
   const loader = $(".loader");
   let seen = false;
   try { seen = sessionStorage.getItem("nexo-intro") === "1"; } catch (e) {}
-
-  if (!hasGsap || reduceMotion || seen) {
-    ready();
+  if (seen) {
+    ready(); buildArt();
   } else {
     try { sessionStorage.setItem("nexo-intro", "1"); } catch (e) {}
     loader.classList.add("is-on");
     gsap.timeline({ onComplete: () => loader.remove() })
-      .to(".loader__line span", { y: 0, duration: 1, ease: "expo.out", stagger: 0.12 })
-      .to(".loader__bar span", { scaleX: 1, duration: 0.9, ease: "power2.inOut" }, "-=0.6")
-      .addLabel("open", "+=0.2")
-      .add(ready, "open+=0.25")
+      .from(".loader__arch", { scaleY: 0, duration: 0.9, ease: "expo.out" })
+      .to(".loader__line span", { y: 0, duration: 1, ease: "expo.out", stagger: 0.12 }, 0.2)
+      .addLabel("open", "+=0.25")
+      .add(() => { ready(); buildArt(); }, "open+=0.2")
       .to(loader, { yPercent: -100, duration: 1, ease: "expo.inOut" }, "open");
-    setTimeout(ready, 3500);
+    setTimeout(() => { if (!root.classList.contains("is-ready")) { ready(); buildArt(); } }, 3500);
   }
 
-  if (!hasGsap || reduceMotion) return;
-  gsap.registerPlugin(ScrollTrigger);
-  root.classList.add("has-gsap");
-
-  // Scroll suave con inercia (escritorio; en táctil se mantiene el scroll nativo)
+  // 3. Scroll suave con inercia
   if (window.Lenis) {
-    const lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 1 });
+    const lenis = new Lenis({ lerp: 0.09 });
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -150,69 +158,73 @@ window.addEventListener("DOMContentLoaded", () => {
     }));
   }
 
-  // 2. Manifiesto: la primera frase se aleja y aparece la segunda (el giro de la idea)
-  gsap.timeline({
-    scrollTrigger: { trigger: ".manifesto", start: "top top", end: "+=140%", pin: ".manifesto__pin", scrub: 1 },
-  })
-    .to(".js-mf-a", { scale: 0.86, opacity: 0, filter: "blur(10px)", ease: "power1.in", duration: 1 })
-    .fromTo(".js-mf-b", { opacity: 0, y: 70, scale: 1.08, filter: "blur(10px)" }, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", ease: "power2.out", duration: 1 }, "-=0.35")
-    .to({}, { duration: 0.4 });
-  ScrollTrigger.create({ trigger: ".manifesto", start: "top top", end: "+=140%", onUpdate: (s) => { window.__bloom.s = (isDesktop() ? 0.9 : 0.9) * (1 + s.progress * 0.35); } });
+  // 4. La ilustración se aleja suavemente al bajar
+  gsap.to(".js-art", { y: 80, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
 
-  // 3. Dolores: paneles que pasan en horizontal mientras bajas (escritorio)
   ScrollTrigger.matchMedia({
+    // Escritorio: secciones fijas
     "(min-width: 960px)": () => {
+      // 5. Dolores en horizontal
       const track = $(".js-pains");
       const dist = () => track.scrollWidth - window.innerWidth;
       gsap.to(track, {
         x: () => -dist(), ease: "none",
         scrollTrigger: { trigger: ".pains__pin", start: "top top", end: () => `+=${dist()}`, pin: true, scrub: 1, invalidateOnRefresh: true },
       });
-      $$(".panel__art i").forEach((icon) => {
-        gsap.fromTo(icon, { rotate: -12, scale: 0.9 }, {
-          rotate: 12, scale: 1.08, ease: "none",
-          scrollTrigger: { trigger: ".pains__pin", start: "top top", end: () => `+=${dist()}`, scrub: true },
-        });
-      });
+      // 6. La línea enredada se desenreda y brota; luego aparece hacia dónde puedes ir
+      reframeTimeline({ trigger: ".reframe", start: "top top", end: "+=130%", pin: ".reframe__pin", scrub: 1 });
+    },
+    // Móvil: mismas ideas, sin fijar la pantalla
+    "(max-width: 959px)": () => {
+      reframeTimeline({ trigger: ".squiggle", start: "top 85%", end: "bottom 30%", scrub: 1 });
     },
   });
 
-  // 4. Riel de los bonos que se llena al avanzar
+  function reframeTimeline(st) {
+    const path = $(".js-squiggle");
+    const len = path.getTotalLength();
+    gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+    gsap.set(".js-sprout", { scale: 0, transformOrigin: "50% 100%" });
+    gsap.timeline({ scrollTrigger: st })
+      .to(path, { strokeDashoffset: 0, ease: "none", duration: 1.4 })
+      .to(".js-sprout", { scale: 1, ease: "back.out(2)", duration: 0.4 })
+      .from(".js-from", { opacity: 0, y: 30, duration: 0.4 }, 0.5)
+      .from(".js-to", { opacity: 0, y: 50, scale: 0.96, duration: 0.5 }, 1.2)
+      .from(".js-steps li", { opacity: 0, y: 16, stagger: 0.08, duration: 0.3 }, 1.5);
+  }
+
+  // 7. Riel de los bonos que se llena
   gsap.fromTo(".js-unlock", { "--fill": 0 }, {
     "--fill": 1, ease: "none",
-    scrollTrigger: { trigger: ".js-unlock", start: "top 65%", end: "bottom 60%", scrub: true },
+    scrollTrigger: { trigger: ".js-unlock", start: "top 70%", end: "bottom 60%", scrub: true },
   });
 
-  // 5. Titular final que sube desde su máscara
-  gsap.from(".final__title .line > span", {
-    yPercent: 110, duration: 1.3, ease: "expo.out", stagger: 0.12,
-    scrollTrigger: { trigger: ".final", start: "top 60%", once: true },
-  });
+  // 8. El sol sale mientras llegas al precio
+  gsap.fromTo(".js-sun", { y: 70 }, { y: 0, ease: "none", scrollTrigger: { trigger: ".sunrise", start: "top 95%", end: "center 55%", scrub: true } });
 
-  // 6. Botones magnéticos (escritorio): invitan al clic sin moverse de su sitio
+  // 9. Cierre: los tres arcos suben y el titular aparece desde su máscara
+  gsap.from(".js-arches g", { scaleY: 0, duration: 1.2, ease: "expo.out", stagger: 0.12, scrollTrigger: { trigger: ".final", start: "top 70%", once: true } });
+  gsap.from(".final__title .line > span", { yPercent: 110, duration: 1.3, ease: "expo.out", stagger: 0.12, scrollTrigger: { trigger: ".final", start: "top 65%", once: true } });
+
+  // 10. Botones magnéticos (escritorio)
   if (finePointer) {
     $$(".magnetic").forEach((btn) => {
       const xTo = gsap.quickTo(btn, "x", { duration: 0.6, ease: "power3.out" });
       const yTo = gsap.quickTo(btn, "y", { duration: 0.6, ease: "power3.out" });
       btn.addEventListener("pointermove", (e) => {
         const r = btn.getBoundingClientRect();
-        xTo((e.clientX - r.left - r.width / 2) * 0.25);
-        yTo((e.clientY - r.top - r.height / 2) * 0.35);
+        xTo((e.clientX - r.left - r.width / 2) * 0.22);
+        yTo((e.clientY - r.top - r.height / 2) * 0.32);
       });
       btn.addEventListener("pointerleave", () => { xTo(0); yTo(0); });
     });
   }
 
-  // 7. Noche y día (se crea al final, después de las secciones fijas, para medir bien): el fondo cambia de color según la sección (cuenta la historia: de la confusión a la claridad)
-  $$("main [data-theme], footer[data-theme]").forEach((sec) => {
+  // 11. El fondo cambia de tono según la sección (se crea al final para medir bien las secciones fijas)
+  $$("main section[data-tone]").forEach((sec) => {
     ScrollTrigger.create({
       trigger: sec, start: "top 55%", end: "bottom 55%",
-      onToggle: (self) => {
-        if (!self.isActive) return;
-        document.body.dataset.theme = sec.dataset.theme;
-        const key = [...sec.classList].find((c) => BLOOM_SPOTS[c]);
-        if (key) setBloom(key);
-      },
+      onToggle: (self) => { if (self.isActive) document.body.style.backgroundColor = TONES[sec.dataset.tone]; },
     });
   });
 
